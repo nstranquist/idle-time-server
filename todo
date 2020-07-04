@@ -1,0 +1,8 @@
+[x] Implement checking if user exists
+[ ] Replace movies code with IdleTime code
+[ ] Connect to cloud atlas database and migrate data/
+[ ] Add error classes for better error handling
+[ ] Look into Passport.js implementation
+[ ] Add testing library / code to project
+[ ] Define documenation for the api and database models
+  --> Write all the database models
