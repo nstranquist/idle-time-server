@@ -8,20 +8,26 @@ const mongoose = require("./config/database"); //database configuration
 var jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const corsOptions = {
-  origin: "http://localhost:5000"
-}
+// const corsOptions = {
+//   origin: "http://localhost:3000"
+// }
 
 const app = express();
 
-app.set("secretKey", "nodeRestApi");// jwt secret token// connection to mongodb
+app.use(cors())
+
+app.set("secretKey", process.env.API_SECRET);// jwt secret token// connection to mongodb
 
 mongoose.connection.on(
   "error",
   console.error.bind(console, "MongoDB connection error:")
 );
 
-app.use(cors(corsOptions))
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', "*")
+//   next();
+// })
+
 
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,7 +37,7 @@ app.get("/", function (req, res) {
 });
 
 // public route
-app.use("/users", users);
+app.use("/auth", users);
 
 // private route
 app.use("/movies", validateUser, movies);
@@ -46,7 +52,7 @@ function validateUser(req, res, next) {
     decoded
   ) {
     if (err) {
-      res.json({ status: "error", message: err.message, data: null });
+      res.status(400).json({ type: "error", message: err.message, data: null });
     } else {
       // add user id to request
       req.body.userId = decoded.id;
@@ -60,6 +66,7 @@ function validateUser(req, res, next) {
 app.use(function (req, res, next) {
   let err = new Error("Not Found");
   err.status = 404;
+  err.type = "error";
   next(err);
 });
 
@@ -68,9 +75,9 @@ app.use(function (err, req, res, next) {
   console.log(err);
 
   if (err.status === 404)
-    res.status(404).json({ message: "Not found" });
+    res.status(404).json({ type: "error", message: "Not found" });
   else
-    res.status(500).json({ message: "Something looks wrong :( !!!" });
+    res.status(500).json({ type: "error", message: "Something looks wrong :(" });
 });
 
 const PORT = process.env.PORT || 5000;
