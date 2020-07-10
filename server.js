@@ -2,6 +2,9 @@ const express = require("express");
 const logger = require("morgan");
 const movies = require("./routes/movies");
 const users = require("./routes/users");
+const tasks = require("./routes/tasks");
+const settings = require('./routes/settings')
+const timetracking = require('./routes/timetracking')
 const bodyParser = require("body-parser");
 const cors = require('cors')
 const mongoose = require("./config/database"); //database configuration
@@ -30,6 +33,7 @@ mongoose.connection.on(
 
 
 app.use(logger("dev"));
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", function (req, res) {
@@ -42,9 +46,15 @@ app.use("/auth", users);
 // private route
 app.use("/movies", validateUser, movies);
 
-app.get("/favicon.ico", function (req, res) {
-  res.sendStatus(204);
-});
+app.use("/tasks", validateUser, tasks)
+
+app.use('/settings', validateUser, settings);
+
+app.use('/timetracking', validateUser, timetracking)
+
+// app.get("/favicon.ico", function (req, res) {
+//   res.sendStatus(200);
+// });
 
 function validateUser(req, res, next) {
   jwt.verify(req.headers["x-access-token"], req.app.get("secretKey"), function (
@@ -77,7 +87,7 @@ app.use(function (err, req, res, next) {
   if (err.status === 404)
     res.status(404).json({ type: "error", message: "Not found" });
   else
-    res.status(500).json({ type: "error", message: "Something looks wrong :(" });
+  res.status(500).json({ type: "error", message: "Something looks wrong :(" });
 });
 
 const PORT = process.env.PORT || 5000;

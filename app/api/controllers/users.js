@@ -12,7 +12,7 @@ module.exports = {
       
       if(userInfo)
         res.status(400).json({
-          type: 'error',
+          status: 'error',
           message: "This email is already taken",
           data: null,
         })
@@ -30,8 +30,8 @@ module.exports = {
             if (err)
               next(err);
             else
-              res.status(200).json({
-                type: "success",
+              res.status(201).json({
+                status: "success",
                 message: "User added successfully!",
                 data: null,
               });
@@ -52,7 +52,7 @@ module.exports = {
             { expiresIn: tokenExpirationTime }
           );
           res.status(200).json({
-            type: "success",
+            status: "success",
             message: "user found!",
             data: {
               user: {
@@ -65,7 +65,7 @@ module.exports = {
           });
         } else {
           res.status(400).json({
-            type: "error",
+            status: "error",
             message: "Invalid email/password",
             data: null,
           });
@@ -74,7 +74,7 @@ module.exports = {
       else {
         console.log('userInfo:', userInfo)
         res.status(404).json({
-          type: "error",
+          status: "error",
           message: "User not found!",
           data: null,
         })
