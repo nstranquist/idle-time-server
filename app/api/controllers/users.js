@@ -9,8 +9,7 @@ module.exports = {
     userModel.findOne({ email: req.body.email }, (err, userInfo) => {
       if(err)
         return next(err);
-      
-      if(userInfo)
+      else if(userInfo)
         res.status(400).json({
           status: 'error',
           message: "This email is already taken",
@@ -22,6 +21,19 @@ module.exports = {
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
+            tasks: {
+              tasksOrder: [],
+              tasks: []
+            },
+            timelogs: [],
+            settings: {},
+            archives: {
+              tasks: []
+            },
+            private: {
+              is_member: false,
+              is_new: true
+            }
           },
           function (err, result) {
             if(result)
@@ -29,13 +41,14 @@ module.exports = {
     
             if (err)
               next(err);
-            else
+            else {
+              // console.log('user password created:', result.user.password)
               res.status(201).json({
                 status: "success",
                 message: "User added successfully!",
                 data: null,
               });
-          }
+          }}
         );
       }
     })
@@ -45,7 +58,9 @@ module.exports = {
       if (err) {
         next(err);
       } else if(userInfo) {
+        console.log('password:', req.body.password, 'password:', userInfo.password)
         if (bcrypt.compareSync(req.body.password, userInfo.password)) {
+          console.log('bcrypt found them to be equal')
           const token = jwt.sign(
             { id: userInfo._id },
             req.app.get("secretKey"),
@@ -55,15 +70,19 @@ module.exports = {
             status: "success",
             message: "user found!",
             data: {
-              user: {
+              userData: {
                 _id: userInfo._id,
                 name: userInfo.name,
                 email: userInfo.email,
               },
+              userSettings: userInfo.settings ? userInfo.settings : [],
+              userStatus: { is_new: true },
+              // userStatus: userInfo.status.is_new ? { is_new: true } : { is_member: userInfo.status.is_member },
               token: token
             },
           });
         } else {
+          console.log('bcrypt compared the two and did not find them equal')
           res.status(400).json({
             status: "error",
             message: "Invalid email/password",
@@ -72,7 +91,7 @@ module.exports = {
         }
       }
       else {
-        console.log('userInfo:', userInfo)
+        console.log('userInfo (not found):', userInfo)
         res.status(404).json({
           status: "error",
           message: "User not found!",
@@ -81,4 +100,18 @@ module.exports = {
       }
     });
   },
+  resetPassword: function(req, res, next) {
+    const email = req.params.email;
+
+    if(email) {
+      console.log('user wants to reset password with email:', email)
+
+    }
+
+    res.status(400).json({
+      status: "error",
+      message: "This feature is not enabled yet",
+      data: null
+    })
+  }
 };

@@ -1,77 +1,107 @@
 // tasks controller
-const taskModel = require('../models/tasks')
+const mongoose = require('mongoose')
+const TaskSchema = require('../models/tasks')
+const userModel = require('../models/users')
+const findUserProperty = require('../../utils/getUser.utils').findUserProperty;
+// const updateUserProperty = require('../../utils/updateUser.utils').updateUserProperty;
+const handleResponses = require('../../utils/handleResponses')
+
+const { handleSuccess, handleError } = handleResponses;
+
+const taskModel = mongoose.model("Task", TaskSchema)
 
 
 module.exports = {
-  getAll: function (req, res, next) {
-    taskModel.find({}, function (err, tasks) {
-      if (err) {
-        next(err);
-      } else {
-        const tasksList = tasks.map(task => ({
-          id: task._id,
-          title: task.title,
-          desc: task.desc,
-          duration: task.duration,
-          startTime: task.startTime,
-          priority: task.priority,
-        }))
+  getAll: async (req, res, next) => {
+    const userId = req.body.userId;
 
-        res.status(200).json({
-          status: "success",
-          message: "Tasks list found!",
-          data: { tasks: tasksList },
-        });
-      }
-    });
+    const userInfo = await findUserProperty(userId, 'tasks', next)
+
+    console.log('user info:', userInfo)
+    
+    if(!userInfo.ok)
+      return handleError(res, userInfo.message); // code will default to 400, data will default to 'null'
+    else if(userInfo.result) {
+      console.log("user info:", userInfo)
+      const { tasks, order } = userInfo.result.tasks
+      const tasksList = tasks.map(task => ({
+        id: task._id,
+        title: task.title,
+        desc: task.desc,
+        duration: task.duration,
+        startTime: task.startTime,
+        priority: task.priority,
+        urlLink: task.url_link
+      }))
+
+      return handleSuccess(res, "User's tasks were found!", 200, { tasks: tasksList, order: order }); // code will default to 200
+    }
+    else
+      return handleErorr(res, "Internal error: no results were found", 500)
   },
-  //getOne: function (req, res, next) {  }
-  addOne: function (req, res, next) {
+  //getOne: function (req, res, next) {  },
+    // var doc = parent.children.id(_id); // for finding item in children array of parent (where user is parent)
+  //getArchivedTasks: function (req, res, next) {  },
+  addOne: async (req, res, next) => {
     const taskData = req.body.taskData;
+    const userId = req.body.userId;
     console.log('request taskData:', req.body.taskData)
 
     if(!taskData)
+      return handleError(res, "Invalid request, taskData is undefined")
+
+    // const userInfo = await findUser(userId, 'tasks')
+    // console.log('user info:', userInfo)
+
+
+    // const result = await userModel.findByIdAndUpdate(
+    //   userId,
+    //   {$push: {"tasks.tasks": taskData}},
+    //   {upsert: true, new: true}
+    // ).lean() // don't really need .lean()
+
+    let userResult
+    try {
+      userResult = await userModel.findById(userId);
+      console.log("user result in try:", userResult)
+    }
+    catch (err) {
+      console.log('error finding user:', err)
+    }
+
+    console.log('user result:', userResult)
+    userResult.tasks.tasks.push(taskData)
+    const tasksLength = userResult.tasks.tasks.length;
+    const taskId = userResult.tasks.tasks[tasksLength - 1]._id;
+    userResult.tasks.order.push(taskId);
+
+    try {
+      const updatedUser = await userResult.save();
+      console.log("updated user:", updatedUser)
+      res.status(201).json({
+        status: "success",
+        message: "Successfully added new task",
+        data: {
+          task: {...taskData, id: taskId},
+          order: updatedUser.tasks.order,
+        }
+      })
+    }
+    catch (err) {
+      console.log('error saving the updatd user:', err)
       res.status(400).json({
         status: "error",
-        message: "Invalid request, taskData is undefined",
-        data: null,
+        message: "error adding new task",
+        data: null
       })
-
-    taskModel.create(
-      taskData,
-      function (err, result) {
-        if (err)
-          next(err);
-        else {
-          console.log('result:', result)
-          const taskResult = {
-            id: result._id,
-            title: result.title,
-            desc: result.desc,
-            duration: result.duration,
-            startTime: result.startTime,
-            priority: result.priority
-          }
-          res.status(201).json({
-            status: "success",
-            message: "Task added successfully!",
-            data: { taskData: taskResult },
-          });
-          // return;
-        }
-      }
-    );
+    }
   },
-  updateOne: function (req, res, next) {
+  updateOne: async (req, res, next) => {
     const taskId = req.params.taskId;
     const taskUpdates = req.body.taskData;
     
     if(!taskId || !taskUpdates)
-      res.status(400).json({
-        status: "error",
-        message: "Invalid request, task data is undefined",
-        data: null,
-      })
+      return handleError(res, "Invalid request, task data is undefined")
     
     taskModel.findByIdAndUpdate(
       taskId,
@@ -80,47 +110,58 @@ module.exports = {
         if (err)
           next(err);
         else {
-          res.status(200).json({
-            status: "success",
-            message: "Task updated successfully!",
-            data: {
-              taskData: {
-                id: taskInfo._id,
-                title: taskInfo.title,
-                desc: taskInfo.desc,
-                duration: taskInfo.duration,
-                startTime: taskInfo.startTime,
-                priority: taskInfo.priority,
-              }
-            }
-          });
+          const taskData = {
+            id: taskInfo._id,
+            title: taskInfo.title,
+            desc: taskInfo.desc,
+            duration: taskInfo.duration,
+            startTime: taskInfo.startTime,
+            priority: taskInfo.priority,
+          }
+          return handleSuccess(res, "Task updated successfully!", 200, { taskData })
         }
       }
     );
   },
-  deleteOne: function (req, res, next) {
+  deleteOne: async (req, res, next) => {
     const taskId = req.params.taskId;
+    const userId = req.body.userId;
     
     if(!taskId)
-      res.status(400).json({
-        status: "error",
-        message: "Invalid request, taskId is undefined",
-        data: null,
-      })
+      return handleError(res, "Invalid request, taskId is undefined")
 
-    // note: could also use req.params.taskId instead. Maybe it'd be lighter-weight
-    taskModel.findByIdAndRemove(taskId, function (err, taskInfo) { // note: should use findByIdAndDelete ?!
-      console.log('task info:', taskInfo)
-      if (err)
-        next(err);
-      else {
-        res.status(200).json({
-          status: "success",
-          message: "Task deleted successfully",
-          data: null
-        });
-      }
-    });
+    // const user = await userModel.findById(userId)
+    // user.tasks = { tasks: [], order: []}
+    // await user.save();
+
+    // const user = await userModel.findById(userId)
+    // const { tasks, order } = user.tasks;
+    // const newTasks = [];
+    // for(let i=0; i<tasks.length; i++) {
+    //   if(tasks[i]._id !== taskId)
+    //     newTasks.push(tasks[i])
+    // }
+    // user.tasks.tasks = newTasks;
+    // user.tasks.order = order.filter(id => id !== taskId);
+
+    // console.log('user:', user)
+
+    res.status(200).json({
+      status: "success",
+      message: "feature in progress",
+      data: null
+    })
+
+    // const updatedUser = await user.save();    
+    // console.log('updated user:', updatedUser)
+
+      // taskModel.findByIdAndRemove(taskId, function (err, taskInfo) { // note: should use findByIdAndDelete ?!
+    //   console.log('task info:', taskInfo)
+    //   if (err)
+    //     next(err);
+    //   else
+    //     return handleSuccess(res, "Task deleted successfully")
+    // });
   }
   // getOrder: function(req, res, next) {
   //   tasksOrderModel.find({}, function (err, tasksOrder) {

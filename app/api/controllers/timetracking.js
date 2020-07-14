@@ -1,4 +1,8 @@
-const timelogModel = require("../models/timetracking");
+const mongoose = require('mongoose')
+const TimeLogSchema = require("../models/timetracking");
+
+const timelogModel = mongoose.model("TimeLog", TimeLogSchema);
+
 
 module.exports = {
   getAll: function (req, res, next) {

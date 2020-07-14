@@ -1,11 +1,23 @@
 [x] Implement checking if user exists
-[ ] Replace movies code with IdleTime code
+[x] Replace movies code with IdleTime code
 [ ] Connect to cloud atlas database and migrate data/
 [ ] Add error classes for better error handling
-[ ] Look into Passport.js implementation
+[x] Look into Passport.js implementation
+  --> implemented authentication without passport
+  --> still a good option for supporting auth through google, github, facebook, etc.
 [ ] Add testing library / code to project
 [ ] Define documenation for the api and database models
   --> Write all the database models
+  --> Document in a text file in this project if not using swagger.io
+[ ] Define default data and schema objects in /constants/index.js
 
 
-- Mockup default data types
+[x] Move tasks, timetracking, settings, etc. into the Users collection
+
+[ ] Remove the "status" field in the json response body, if it isn't needed
+  --> The error code should suffice as the status?
+
+[ ] Enable resetPassword() functionality!!
+  --> http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
+  --> https://docs.mongodb.com/manual/reference/method/db.changeUserPassword/
+

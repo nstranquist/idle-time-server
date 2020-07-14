@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const TimeLogSchema = new Schema({
+  task_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: false
+  },
   title: {
     type: String,
     required: true
@@ -16,12 +20,8 @@ const TimeLogSchema = new Schema({
     default: 10,
     required: true,
   },
-  // metaData: {
-  //   type: Object,
-  //   required: false
-  // }
 },
 { timestamps: true}
 );
 
-module.exports = mongoose.model("TimeLog", TimeLogSchema);
+module.exports = TimeLogSchema;

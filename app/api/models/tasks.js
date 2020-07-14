@@ -2,25 +2,6 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
-
-// const TasksCollectionSchema = new Schema({
-//   tasks: {
-//     type: [TaskSchema],
-//     default: [],
-//   },
-//   order: {
-//     type: Map,
-//     of: String,
-//   },
-// })
-
-// const TasksOrderSchema = new Schema({
-//   order: {
-//     type: Map,
-//     of: String,
-//   }
-// })
-
 const TaskSchema = new Schema({
   title: {
     type: String,
@@ -40,16 +21,18 @@ const TaskSchema = new Schema({
   startTime: {
     type: String,
     default: new Date().toISOString(),
-    trim: false,
-    required: true,
+    required: false,
   },
   priority: {
     type: Number,
     default: 1,
     required: true,
   },
-})
+  url_link: {
+    type: String,
+    required: false
+  }
+}, { timestamps: true } // assigns 'createdAt' and 'updatedAt' fields to object. Of type Date. Date is basically a timestamp
+)
 
-module.exports = mongoose.model("Task", TaskSchema)
-
-// tasksOrderModel: mongoose.model("TasksOrder", TasksOrderSchema),
+module.exports = TaskSchema;

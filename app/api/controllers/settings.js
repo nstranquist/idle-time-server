@@ -1,5 +1,9 @@
 // settings controller
-const settingsModel = require('../models/settings')
+const mongoose = require('mongoose')
+const SettingsSchema = require('../models/settings')
+
+const settingsModel = mongoose.model("Settings", SettingsSchema)
+
 
 module.exports = {
   get: function (req, res, next) {
