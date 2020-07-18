@@ -1,4 +1,4 @@
-const userModel = require('../api/models/users')
+const userModel = require('../models/users')
 
 
 // userId: ObjectId, userProperties: 'field1, field2, field3, ...'
@@ -6,9 +6,10 @@ const findUserProperty = async (userId, userProperties, nextError) => {
   if(userId && userProperties) {
     console.log('finding user by id:', userId)
     const result = await userModel.findById(userId, userProperties, (err, userInfo) => {
+      console.log('user info:', userInfo)
       if(err) return nextError(err);
       else return userInfo;
-    })
+    }).lean()
     return { ok: true, result }
   }
   else {
@@ -18,4 +19,4 @@ const findUserProperty = async (userId, userProperties, nextError) => {
   }
 }
 
-module.exports = { findUserProperty }
+module.exports = findUserProperty

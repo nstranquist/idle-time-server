@@ -1,4 +1,4 @@
-const userModel = require('../api/models/users')
+const userModel = require('../models/users')
 
 // Updates a single user property
 const updateUserProperty = (userId, propertyName, updateData, nextError) => {

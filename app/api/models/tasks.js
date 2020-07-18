@@ -31,6 +31,11 @@ const TaskSchema = new Schema({
   url_link: {
     type: String,
     required: false
+  },
+  dayOfSchedule: {
+    type: Number,
+    default: 0, // the current day
+    required: false
   }
 }, { timestamps: true } // assigns 'createdAt' and 'updatedAt' fields to object. Of type Date. Date is basically a timestamp
 )

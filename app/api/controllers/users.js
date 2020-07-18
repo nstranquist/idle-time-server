@@ -25,6 +25,7 @@ module.exports = {
               tasksOrder: [],
               tasks: []
             },
+            projects: [],
             timelogs: [],
             settings: {},
             archives: {
@@ -58,14 +59,16 @@ module.exports = {
       if (err) {
         next(err);
       } else if(userInfo) {
-        console.log('password:', req.body.password, 'password:', userInfo.password)
         if (bcrypt.compareSync(req.body.password, userInfo.password)) {
-          console.log('bcrypt found them to be equal')
           const token = jwt.sign(
             { id: userInfo._id },
             req.app.get("secretKey"),
             { expiresIn: tokenExpirationTime }
           );
+          // console.log('user model:', userInfo)
+          userInfo.projects=[];
+          userInfo.save();
+
           res.status(200).json({
             status: "success",
             message: "user found!",
@@ -113,5 +116,8 @@ module.exports = {
       message: "This feature is not enabled yet",
       data: null
     })
+  },
+  getUserData: async (req, res, next) => {
+    
   }
 };

@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const TaskSchema = require('./tasks')
+const ProjectSchema = require('./projects')
 const SettingsSchema = require('./settings')
 const TimeLogSchema = require('./timetracking')
-// const TemplateSchema = require('./templates')
+const PresetSchema = require('./presets')
 
 const saltRounds = 10;
 
@@ -40,26 +41,29 @@ const UserSchema = new Schema({
     },
     // hoursWorked: Number, currentTask: ObjectId, isOverTime: Boolean, hasStarted: Boolean, etc...
   },
-  // templates: [TemplateSchema], // either this or inside 'tasks'
+  projects: {
+    type: [ProjectSchema],
+    default: [],
+    required: true
+  },
+  presets: {
+    type: [PresetSchema], // either this or inside 'tasks'
+    required: false
+  },
   archives: {
-    tasks: [TaskSchema] // for old tasks
+    tasks: [TaskSchema], // for old tasks
+    presets: [PresetSchema]
     // ...alarms, 
   },
-  settings: SettingsSchema,
+  settings: {
+    type: SettingsSchema,
+  },
   timelogs: {
     type: [TimeLogSchema], // settings for timelogs either inside of it, or in 'settings'
     default: [],
     // timestamps: true
   },
   // alarms: AlarmSchema,
-  // timetracking: {
-  //   timelogs: TimeLogSchema,
-  //   settings: {
-  //     workStart: String,
-  //     workEnd: String,
-  //     workDuration: Number
-  //   }
-  // }
   status: {
     is_member: {
       type: Boolean,

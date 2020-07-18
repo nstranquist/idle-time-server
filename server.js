@@ -1,11 +1,14 @@
 const express = require("express");
-const logger = require("morgan");
+const morganLogger = require("morgan");
 const users = require("./routes/users");
 const tasks = require("./routes/tasks");
+const projects = require("./routes/projects");
 const settings = require('./routes/settings')
 const timetracking = require('./routes/timetracking')
+const presets = require('./routes/presets')
 const bodyParser = require("body-parser");
 const cors = require('cors')
+const winston = require('winston')
 const mongoose = require("./config/database"); //database configuration
 var jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -26,7 +29,9 @@ app.set("secretKey", process.env.API_SECRET);// jwt secret token// connection to
 //   next();
 // })
 
-app.use(logger("dev"));
+
+app.use(morganLogger("dev"));
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -40,9 +45,13 @@ app.use("/auth", users);
 // private route
 app.use("/tasks", validateUser, tasks)
 
+app.use("/projects", validateUser, projects)
+
 app.use('/settings', validateUser, settings);
 
 app.use('/timetracking', validateUser, timetracking)
+
+app.use('/presets', validateUser, presets)
 
 // app.get("/favicon.ico", function (req, res) {
 //   res.sendStatus(200);
