@@ -17,7 +17,6 @@ COPY server.js /api/server.js
 COPY app /api/app
 COPY constants /api/constants
 COPY routes /api/routes
-COPY config /api/config
 COPY database.js /api/database.js
 
 EXPOSE 8080
