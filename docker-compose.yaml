@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  api-server:
+    image: docker.pkg.github.com/nstranquist/idle-time-server/api:latest
+    restart: always
+    environment:
+      - PORT=8080
+      - API_SECRET=nodeRestApi
+      - MONGO_DB_CONN=mongodb+srv://root:demodemo@idletime-cluster1.gk0uj.mongodb.net/<dbname>?retryWrites=true&w=majority
+    ports:
+      - "80:8080"

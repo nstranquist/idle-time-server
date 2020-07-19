@@ -55,6 +55,7 @@ module.exports = {
     })
   },
   authenticate: function (req, res, next) {
+    console.log('user is attempting to authenticate')
     userModel.findOne({ email: req.body.email }, function (err, userInfo) {
       if (err) {
         next(err);

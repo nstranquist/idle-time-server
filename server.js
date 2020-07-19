@@ -9,9 +9,10 @@ const presets = require('./routes/presets')
 const bodyParser = require("body-parser");
 const cors = require('cors')
 const winston = require('winston')
-const mongoose = require("./config/database"); //database configuration
+const mongoose = require("./database"); //database configuration
+// const mongoose = require("./config/database"); //database configuration
 var jwt = require("jsonwebtoken");
-require("dotenv").config();
+// require("dotenv").config();
 
 const db = mongoose.connection;
 
@@ -20,9 +21,14 @@ db.on("open", () => console.log('connected to db successfully'))
 
 const app = express();
 
+// const corsOptions = {
+//   origin: "http://localhost:80"
+// }
+
 app.use(cors())
 
-app.set("secretKey", process.env.API_SECRET);// jwt secret token// connection to mongodb
+const apiSecret = process.env.API_SECRET
+app.set("secretKey", apiSecret);// jwt secret token// connection to mongodb
 
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', "*")
