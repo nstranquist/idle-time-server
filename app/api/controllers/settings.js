@@ -12,14 +12,16 @@ module.exports = {
   getAll: async (req, res, next) => {
     const userId = req.body.userId;
     
-    const userSettings = await findUserProperty(userId, "settings", next);
-    if(!userSettings) return next();
-    else console.log('user settings found:', userSettings)
-
-    if(userSettings)
-      res.status(200).json({ status: "success", message: "found your settings!", data: { settings: userSettings } })
-    else
-      res.status(400).json({ status: "error", message: "could not find the user's settings", data: null })
+    try {
+      const userSettings = await findUserProperty(userId, "settings", next);
+      if(!userSettings.ok) return next();
+      const settings = userSettings.result.settings;
+      delete settings._id;
+      res.status(200).json({ status: "success", message: "found your settings!", data: { settings } })
+    } catch (error) {
+      console.log('error')
+      throw new Error(error.toString())
+    }
   },
   getSection: async (req, res, next) => {
     const userId = req.body.userId;

@@ -25,7 +25,7 @@ const TaskSchema = new Schema({
   },
   priority: {
     type: Number,
-    default: 1,
+    default: 3,
     required: true,
   },
   url_link: {
