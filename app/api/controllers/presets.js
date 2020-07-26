@@ -38,13 +38,11 @@ module.exports = {
 
     let userResult = await findUser(userId)
     if(!userResult) next();
-    else console.log('user result:', userResult)
 
     // save presetBody to userResult
     console.log('preset body:', presetBody)
     // const newPreset = new PresetSchema(presetBody)
-    const newPreset = {title: presetBody.title, category: presetBody.category}
-    userResult.presets.push(newPreset)
+    userResult.presets.push(presetBody)
     const presetsLength = userResult.presets.length;
 
     try {
@@ -98,7 +96,6 @@ module.exports = {
 
     let userResult = await findUser(userId)
     if(!userResult) next();
-    else console.log('user result:', userResult)
 
     const presetIndex = await userResult.presets.findIndex(preset => preset._id.toString() === presetId);
     if(presetIndex < 0) return res.status(400).json({status: "error", message: "preset not found", data: null })
@@ -117,5 +114,30 @@ module.exports = {
       console.log('error deleting preset:', error)
       next();
     }
-  }
+  },
+  // deleteByTaskId: async (req, res, next) => {
+  //   const userId = req.body.userId;
+  //   const taskId = req.params.id;
+
+  //   let userResult = await findUser(userId)
+  //   if(!userResult) next();
+
+  //   const presetIndex = await userResult.presets.findIndex(preset => preset._id.toString() === taskId);
+  //   if(presetIndex < 0) return res.status(400).json({status: "error", message: "preset not found", data: null })
+
+  //   userResult.presets.splice(presetIndex, 1)
+    
+  //   try {
+  //     await userResult.save().then(() => {
+  //       res.status(200).json({
+  //         type: "success",
+  //         message: "deleted your preset",
+  //         data: { id: taskId }
+  //       })
+  //     })
+  //   } catch (error) {
+  //     console.log('error deleting preset:', error)
+  //     next();
+  //   }
+  // },
 }

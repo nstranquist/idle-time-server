@@ -22,6 +22,11 @@ const app = express();
 
 app.use(cors())
 
+process.on('unhandledRejection', error => {
+  // Will print "unhandledRejection err is not defined"
+  console.log('unhandledRejection', error.message);
+});
+
 app.set("secretKey", process.env.API_SECRET);// jwt secret token// connection to mongodb
 
 // app.use((req, res, next) => {

@@ -29,11 +29,11 @@ module.exports = {
       if(!user) return next()
       
       const length = user.projects.length;
-      console.log('project length:', length)
       user.projects.push(project)
+      
       const updatedUser = await user.save();
       console.log('updated user projects:', updatedUser.projects);
-      res.status(200).json({ status: "success", message: "updated user projects", data: { project: updatedUser.projects[length] }})
+      res.status(200).json({ status: "success", message: "added new project", data: { project: updatedUser.projects[length] }})
     } catch(error) {
       console.log('error:', error)
       throw new Error(error.toString())
@@ -72,12 +72,12 @@ module.exports = {
       const foundIndex = await user.projects.findIndex(project => project._id.toString() === projectId)
       if(foundIndex < 0) return next();
 
-      user.projects.splice[foundIndex, 1];
+      user.projects.splice(foundIndex, 1);
 
       const updatedUser = await user.save();
-      console.log('updated user projects:', updatedUser.projects);
+      console.log('updated user projects:', updatedUser.projects, 'length:', user.projects.length);
 
-      res.status(200).json({ status: "success", message: "updated user projects", data: { id: projectId }})
+      res.status(200).json({ status: "success", message: "removed user project", data: { id: projectId }})
     } catch(error) {
       console.log('error:', error)
       throw new Error(error.toString())

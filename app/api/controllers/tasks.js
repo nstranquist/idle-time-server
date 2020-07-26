@@ -58,7 +58,6 @@ module.exports = {
 
     let userResult = await findUser(userId)
     if(!userResult) next();
-    else console.log('user result:', userResult)
 
     userResult.tasks.tasks.push(taskData)
     const tasksLength = userResult.tasks.tasks.length;
@@ -85,19 +84,23 @@ module.exports = {
       })
     }
   },
-  // // updateOne task does NOT imply updating the order of it
+  // // updateOne does NOT update the task order
   updateOne: async (req, res, next) => {
     const userId = req.body.userId;
     const taskId = req.params.taskId;
     const taskData = req.body.taskData;
+
+    console.log('task data:', taskData)
     
     if(!taskId || !taskData)
       return handleError(res, "Invalid request, task data is undefined")
 
+    if(taskData.order) delete taskData.order;
+
     const user = await findUser(userId)
     if(!user) return next();
 
-    const tasks = user.tasks.tasks;
+    const tasks = user.tasks.tasks;    
     const taskItem = await tasks.id(taskId)
     if(!taskItem) {
       console.log('task item not found')
@@ -107,10 +110,21 @@ module.exports = {
     taskItem.set(taskData)
     console.log('task item after set:', taskItem)
 
+    if(taskData.project) {
+      // update the projects to contain the task id
+      const projectId = taskData.project._id; // or _id
+      console.log('project id:', projectId)
+      const project = await user.projects.find(project => project._id.toString() === projectId)
+      if(project) {
+        console.log('found project:', project)
+      }
+      else res.status(500).json({status:"error",message:"Internal error, project not found",data:null})
+    }
+
     try {
       const result = await user.save();
       console.log('result:', result)
-      res.status(200).json({ status: "success", message: "updated user task", data: {taskData: taskItem}})
+      res.status(200).json({ status: "success", message: "updated user task", data: {taskData: taskItem }})
     } catch (error) {
       console.log('error:', error)
       res.status(400).json({ status: "error", message: error.toString(), data: null })
@@ -122,27 +136,29 @@ module.exports = {
 
     if(!order)
       return handleError(res, "Invalid request, order is undefined")
+    else console.log('received new order:', order)
     
     try {
-      const user = await userModel.findOne({"_id": userId }).lean().exec();
-      if(!user) next();
-      const order = user.tasks.order;
-      const result = await userModel.updateOne(
-        { _id: mongoose.Types.ObjectId(userId) },
-        { "$set": { "tasks.order": order } }
-      )
-      console.log('update order result:', result)
-      res.status(200).json({ status: "success", message: "updated the tasks order", data: order })
+      const user = await findUser(userId)
+      if(!user) return next();
+
+      const oldOrder = user.tasks.order;
+
+      // if order isn't different from previous order, don't modify data 
+      if(JSON.stringify(order) == JSON.stringify(oldOrder))
+        return res.status(400).json({ status: "error", message: "order is the same as before", data: null })
+
+      // update the order with the new order
+      user.tasks.order = order;
+
+      const updatedUser = await user.save();
+
+      console.log('update order result:', updatedUser.tasks.order)
+      return res.status(200).json({ status: "success", message: "updated the tasks order", data: {order: updatedUser.tasks.order} })
     } catch (error) {
       console.log('error updating task order:', error)
       res.status(400).json({ status: 'error', message: error.toString(), data: null })
     }
-
-    res.status(400).json({
-      status: "error",
-      message: "this feature is not enabled yet",
-      data: null
-    })
   },
   deleteOne: async (req, res, next) => {
     const userId = req.body.userId;
