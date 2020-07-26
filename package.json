@@ -2,7 +2,7 @@
   "name": "auth-2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "mocha 'tests/**/*.spec.ts'",
     "dev-start": "nodemon server.js",
