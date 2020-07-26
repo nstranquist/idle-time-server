@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const TaskSchema = new Schema({
   title: {
     type: String,
-    trim: false,
+    trim: true,
     required: true,
   },
   desc: {
@@ -35,6 +35,10 @@ const TaskSchema = new Schema({
   dayOfSchedule: {
     type: Number,
     default: 0, // the current day
+    required: false
+  },
+  project: {
+    type: {_id: mongoose.Schema.Types.ObjectId, title: String},
     required: false
   }
 }, { timestamps: true } // assigns 'createdAt' and 'updatedAt' fields to object. Of type Date. Date is basically a timestamp

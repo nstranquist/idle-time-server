@@ -66,8 +66,7 @@ module.exports = {
             { expiresIn: tokenExpirationTime }
           );
           // console.log('user model:', userInfo)
-          // userInfo.projects=[];
-          // userInfo.settings={}
+          // userInfo.timelogs = [];
           // userInfo.save();
 
           res.status(200).json({

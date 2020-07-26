@@ -21,7 +21,12 @@ const ProjectSchema = new mongoose.Schema({
   payRate: {
     type: Number,
     required: false
-  }
+  },
+  // themeColor: {
+  //   type: String,
+  //   default: #000,
+  //   required: true
+  // }
 }, { timestamps: true }
 )
 

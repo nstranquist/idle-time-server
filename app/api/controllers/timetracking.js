@@ -23,17 +23,20 @@ module.exports = {
       return handleErorr(res, "Internal error: no results were found", 500)
   },
   addOne: async (req, res, next) => {
-    const { userId, timelogData } = req.body
+    const { userId, timelog } = req.body
+
+    if(!timelog) return res.status(400).json({status:"error",message:"timelog data not provided",data:null})
 
     const user = await findUser(userId)
     if(!user) return next();
 
-    user.timelogs.push(timelogData);
+    const length = user.timelogs.length;
+    user.timelogs.push(timelog);
     
     try {
       const updatedUser = await user.save();
       console.log('updated user:', updatedUser)
-      res.status(200).json({ status: "success", message: "added your timelog", data: { timelog: updatedUser.timelogs[user.timelogs.length]}})
+      res.status(200).json({ status: "success", message: "added your timelog", data: { timelog: updatedUser.timelogs[length]}})
     } catch (error) {
       console.log('error:', error)
       res.status(400).json({ status: "error", message: "could not add the timelog to user's timelogs", data: null})
@@ -74,7 +77,7 @@ module.exports = {
     try {
       const updatedUser = await user.save();
       console.log('updated user after delete:', updatedUser)
-      res.status(200).json({ status: "error", message: "deleted user's timelog successfully", data: { id: timelogId }})
+      res.status(200).json({ status: "success", message: "deleted user's timelog successfully", data: { id: timelogId }})
     } catch (error) {
       console.log('error:', error)
       next();

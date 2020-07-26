@@ -10,8 +10,9 @@ const bodyParser = require("body-parser");
 const cors = require('cors')
 const winston = require('winston')
 const mongoose = require("./config/database"); //database configuration
+// const mongoose = require('./database')
 var jwt = require("jsonwebtoken");
-require("dotenv").config();
+// require("dotenv").config();
 
 const db = mongoose.connection;
 
@@ -21,6 +22,11 @@ db.on("open", () => console.log('connected to db successfully'))
 const app = express();
 
 app.use(cors())
+
+process.on('unhandledRejection', error => {
+  // Will print "unhandledRejection err is not defined"
+  console.log('unhandledRejection', error.message);
+});
 
 app.set("secretKey", process.env.API_SECRET);// jwt secret token// connection to mongodb
 
