@@ -1,0 +1,17 @@
+name: Build Docker Image to Github Packages
+on:
+  push:
+    branches:
+      - production
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish to Github Packages
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: nstranquist/idle-time-server/api
+        username: ${{ github.actor }}
+        password: ${{ secrets.TOKEN }}
+        registry: docker.pkg.github.com
