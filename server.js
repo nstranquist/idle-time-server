@@ -9,9 +9,10 @@ const presets = require('./routes/presets')
 const bodyParser = require("body-parser");
 const cors = require('cors')
 const winston = require('winston')
-const mongoose = require("./config/database"); //database configuration
+// const mongoose = require("./config/database"); //database configuration
+const mongoose = require('./database')
 var jwt = require("jsonwebtoken");
-require("dotenv").config();
+// require("dotenv").config();
 
 const db = mongoose.connection;
 

@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   api-server:
-    image: docker.pkg.github.com/nstranquist/idle-time-server/api:latest
+    image: docker.pkg.github.com/nstranquist/idle-time-server/api:production
     restart: always
     environment:
       - PORT=8080
