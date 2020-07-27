@@ -6,6 +6,10 @@ const tokenExpirationTime = "4h"
 
 module.exports = {
   create: function (req, res, next) {
+    const password = req.body.password;
+    if(password.length < 8)
+      res.status(400).json({ status: "error", message: "The password is too short", data: null })
+      
     userModel.findOne({ email: req.body.email }, (err, userInfo) => {
       if(err)
         return next(err);

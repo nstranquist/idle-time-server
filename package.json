@@ -1,7 +1,7 @@
 {
-  "name": "auth-2",
+  "name": "idle-time-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "server for the idle time app",
   "main": "server.js",
   "scripts": {
     "test": "mocha 'tests/**/*.spec.ts'",
