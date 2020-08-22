@@ -12,7 +12,7 @@ const winston = require('winston')
 const mongoose = require("./config/database"); //database configuration
 // const mongoose = require('./database')
 var jwt = require("jsonwebtoken");
-// require("dotenv").config();
+require("dotenv").config();
 
 const db = mongoose.connection;
 
@@ -88,10 +88,11 @@ app.use(function (req, res, next) {
 
 // handle errors
 app.use(function (err, req, res, next) {
-  console.log(err);
+  // console.log('error handler:', err);
 
   // idea: check for an attached "error" field in request, and see if can give more custom error msessage
-
+  // if(err.status && err.message)
+  //   res.status(err.status).json({ status: "error", message: err.message})
   if (err.status === 404)
     res.status(404).json({ status: "error", message: "Resource not found" });
   else

@@ -5,14 +5,26 @@ const jwt = require("jsonwebtoken");
 const tokenExpirationTime = "4h"
 
 module.exports = {
-  create: function (req, res, next) {
-    const password = req.body.password;
+  create: async (req, res, next) => {
+    try {
+      console.log('req.body:', req.body)
+      if(!req.body.name) res.status(400).json({ status: "error", message: "The name is not defined", data: null })
+      if(!req.body.email) res.status(400).json({ status: "error", message: "The email is not defined", data: null })
+      else if(!req.body.password) res.status(400).json({ status: "error", message: "The password is not defined", data: null })
+    } catch(error) {
+      console.log('error cuahgt:', error.toString())
+      next(error)
+    }
+
+    const { name, email, password } = req.body;
+    
     if(password.length < 8)
-      res.status(400).json({ status: "error", message: "The password is too short", data: null })
+      res.status(400).json({ message: "The password is too short", data: null })
       
-    userModel.findOne({ email: req.body.email }, (err, userInfo) => {
-      if(err)
+    userModel.findOne({ email }, (err, userInfo) => {
+      if(err) {
         return next(err);
+      }
       else if(userInfo)
         res.status(400).json({
           status: 'error',
@@ -22,9 +34,9 @@ module.exports = {
       else {
         userModel.create(
           {
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
+            name,
+            email,
+            password,
             tasks: {
               tasksOrder: [],
               tasks: []
@@ -41,11 +53,10 @@ module.exports = {
             }
           },
           function (err, result) {
-            if(result)
-              console.log('debug: result from user create:' + result)
-    
-            if (err)
+            if (err) {
+              console.log('error:', err)
               next(err);
+            }
             else {
               // console.log('user password created:', result.user.password)
               res.status(201).json({
@@ -58,7 +69,7 @@ module.exports = {
       }
     })
   },
-  authenticate: function (req, res, next) {
+  authenticate: async (req, res, next) => {
     userModel.findOne({ email: req.body.email }, function (err, userInfo) {
       if (err) {
         next(err);
@@ -92,7 +103,7 @@ module.exports = {
           console.log('bcrypt compared the two and did not find them equal')
           res.status(400).json({
             status: "error",
-            message: "Invalid email/password",
+            message: "User not found!",
             data: null,
           });
         }

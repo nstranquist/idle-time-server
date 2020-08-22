@@ -11,6 +11,12 @@ const saltRounds = 10;
 
 const Schema = mongoose.Schema;
 
+// credit: https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
+const isEmail = (email) => {
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email)
+}
+
 const UserSchema = new Schema({
   name: {
     type: String,
@@ -20,13 +26,15 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    validate: [isEmail, 'Please use a valid email address'],
+    // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please use a valid email address']
     // unique: true // throws "use createIndex instead of ensureIndex" error
   },
   password: {
     type: String,
     trim: true,
-    required: true
+    required: true,
   },
   tasks: { // or rename to 'timeblocking'
     tasks: {
