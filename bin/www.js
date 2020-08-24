@@ -1,13 +1,11 @@
 const http = require('http');
-// const cluster = require('cluster'); // native node module for clustering processes
-// const os = require('os'); // for os operations
+// const https = require('https');
+// const fs = require('fs');
 const config = require('../server/config')[process.env.NODE_ENV || 'development'];
 const app = require('../server/app')(config);
 const db = require('../server/lib/db');
 
 const log = config.logger();
-
-// const numCPUs = os.cpus().length;
 
 // Normlize port into a number, string, or false
 function normalizePort(val) {
@@ -26,33 +24,16 @@ function normalizePort(val) {
 
 // Get port from environment and store in express
 const port = normalizePort(process.env.PORT || '8080');
-// app.set('port', port);
 
-// Create HTTP server and listen on port
+// FOR SSL ENCRYPTION
+// const options = {
+//   key: fs.readFileSync('./fixtures/keys/agent2-key.pem'),
+//   cert: fs.readFileSync('./fixtures/keys/agent2-cert.pem'),
+// };
+
+// Create HTTP/HTTPS server and listen on port
 const server = http.createServer(app);
-
-// Logic for clustering
-// if (cluster.isMaster) {
-//   log.info(`Master ${process.pid} is running`);
-//   for (let i = 0; i < numCPUs; i += 1) {
-//     cluster.fork(); // creates a worker
-//   }
-//   cluster.on('exit', (worker) => {
-//     log.fatal(`Worker ${worker.process.pid} just died`);
-//     // fork a new worker if worker dies
-//     cluster.fork();
-//   });
-// } else {
-//   // if process is a child, connect to db and listen
-//   db.connect(config.mongodb.connection)
-//     .then(() => {
-//       log.info('Connected to MongoDB');
-//       server.listen(port);
-//     })
-//     .catch((err) => {
-//       log.fatal(err);
-//     });
-// }
+// const server = https.createServer(options, app).listen(port);
 
 db.connect(config.mongodb.connection)
   .then(() => {
@@ -96,3 +77,28 @@ server.on('error', (error) => {
     // throw error;
   }
 });
+
+// const numCPUs = os.cpus().length;
+
+// Logic for clustering
+// if (cluster.isMaster) {
+//   log.info(`Master ${process.pid} is running`);
+//   for (let i = 0; i < numCPUs; i += 1) {
+//     cluster.fork(); // creates a worker
+//   }
+//   cluster.on('exit', (worker) => {
+//     log.fatal(`Worker ${worker.process.pid} just died`);
+//     // fork a new worker if worker dies
+//     cluster.fork();
+//   });
+// } else {
+//   // if process is a child, connect to db and listen
+//   db.connect(config.mongodb.connection)
+//     .then(() => {
+//       log.info('Connected to MongoDB');
+//       server.listen(port);
+//     })
+//     .catch((err) => {
+//       log.fatal(err);
+//     });
+// }

@@ -1,4 +1,4 @@
-const userModel = require('../models/UserModel');
+const UserModel = require('../models/UserModel');
 const findUser = require('../utils/findUser');
 const findUserProperty = require('../utils/findUserProperty');
 
@@ -7,9 +7,12 @@ module.exports = {
     const { userId } = req.body;
     try {
       const userInfo = await findUserProperty(userId, 'projects', next);
+      // const userInfo = await UserModel.findById(userId, (err, res) => {
+      //   if (err) return next(new Error(err.toString()));
+      //   return res;
+      // });
       if (!userInfo.ok) next();
       else {
-        console.log('user info:', userInfo);
         const { projects } = userInfo.result;
         console.log('projects:', projects);
         res.status(200).json({ status: 'success', message: 'found your projects', data: { projects } });
@@ -25,6 +28,7 @@ module.exports = {
     if (!project) next();
 
     try {
+      // const user = await UserModel.findById(userId);
       const user = await findUser(userId);
       if (!user) return next();
 
@@ -54,7 +58,7 @@ module.exports = {
       project.set(projectData);
 
       const result = await user.save();
-      console.log('result:', result);
+      console.log('result[projects]:', result.projects);
       res.status(200).json({ status: 'success', message: 'updated your project', data: { project } });
     } catch (error) {
       console.log('error:', error);

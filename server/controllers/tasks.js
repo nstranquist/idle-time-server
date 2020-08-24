@@ -27,7 +27,7 @@ module.exports = {
 
     const userInfo = await findUserProperty(userId, 'tasks', next);
 
-    console.log('user info:', userInfo);
+    console.log('user tasks info:', userInfo);
 
     if (!userInfo.ok) return handleError(res, userInfo.message); // code will default to 400, data will default to 'null'
     if (userInfo.result) {
@@ -109,7 +109,7 @@ module.exports = {
       // update the projects to contain the task id
       const projectId = taskData.project._id; // or _id
       console.log('project id:', projectId);
-      const project = await user.projects.find((project) => project._id.toString() === projectId);
+      const project = await user.projects.find((proj) => proj._id.toString() === projectId);
       if (project) {
         console.log('found project:', project);
       } else res.status(500).json({ status: 'error', message: 'Internal error, project not found', data: null });
@@ -117,7 +117,7 @@ module.exports = {
 
     try {
       const result = await user.save();
-      console.log('result:', result);
+      console.log('result[tasks]:', result.tasks);
       res.status(200).json({ status: 'success', message: 'updated user task', data: { taskData: taskItem } });
     } catch (error) {
       console.log('error:', error);

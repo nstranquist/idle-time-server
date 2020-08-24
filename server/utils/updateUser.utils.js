@@ -1,24 +1,21 @@
-const userModel = require('../models/users')
+const UserModel = require('../models/UserModel');
 
 // Updates a single user property
-const updateUserProperty = (userId, propertyName, updateData, nextError) => {
-  if(userId && userProperty) {
-    console.log('finding user by id:', userId)
-    const result = await userModel.findByIdAndUpdate(userId, { [propertyName]: updateData }, (err, userInfo) => {
-      if(err) return nextError(err);
-      else {
-        console.log('find by id and update user info result:', userInfo)
-        return userInfo;
-      }
-    })
-    console.log('result (outside of query):', result)
-    return { ok: true, result }
-  }
-  else {
-    if(!userId) return { ok: false, message: "User id was not received" }
-    else if(!userProperties) return { ok: false, message: "User properties were not received" }
-    else return { ok: false, message: "Internal Error" }
-  }
-}
+const updateUserProperty = async (userId, propertyName, updateData, nextError) => {
+  if (userId && propertyName) {
+    const result = await UserModel.findByIdAndUpdate(userId, { [propertyName]: updateData }, (err, userInfo) => {
+      if (err) return nextError(err);
 
-module.exports = { updateUserProperty }
+      console.log('find by id and update user info result:', userInfo);
+      return userInfo;
+    });
+    console.log('result (outside of query):', result);
+    return { ok: true, result };
+  }
+
+  if (!userId) return { ok: false, message: 'User id was not received' };
+  if (!propertyName) return { ok: false, message: 'User properties were not received' };
+  return { ok: false, message: 'Internal Error' };
+};
+
+module.exports = { updateUserProperty };
