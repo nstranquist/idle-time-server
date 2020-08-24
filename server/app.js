@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const mongoose = require('mongoose'); // database configuration
 const MongoStore = require('connect-mongo')(session);
+const jwt = require('jsonwebtoken');
 const auth = require('./lib/auth');
 const users = require('./routes/users');
 const tasks = require('./routes/tasks');
@@ -125,9 +126,9 @@ module.exports = (config) => {
     if (err.status === 404) { res.status(404).json({ status: 'error', message: 'Resource not found' }); } else { res.status(500).json({ status: 'error', message: 'Internal Error: Something looks wrong' }); }
   });
 
-  const PORT = process.env.PORT || 5000;
+  // const PORT = process.env.PORT || 5000;
 
-  app.listen(PORT, () => {
-    console.log(`Node server listening on port ${PORT}`);
-  });
+  // app.listen(PORT, () => {
+  //   console.log(`Node server listening on port ${PORT}`);
+  // });
 };

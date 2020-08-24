@@ -1,4 +1,3 @@
-// require('dotenv').config();
 const http = require('http');
 // const cluster = require('cluster'); // native node module for clustering processes
 // const os = require('os'); // for os operations
@@ -26,7 +25,7 @@ function normalizePort(val) {
 }
 
 // Get port from environment and store in express
-const port = normalizePort(process.env.PORT || '5000');
+const port = normalizePort(process.env.PORT || '8080');
 // app.set('port', port);
 
 // Create HTTP server and listen on port
@@ -54,7 +53,7 @@ const server = http.createServer(app);
 //       log.fatal(err);
 //     });
 // }
-log.info('connecting to db');
+
 db.connect(config.mongodb.connection)
   .then(() => {
     log.info('Connected to MongoDB');
