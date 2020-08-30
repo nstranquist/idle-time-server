@@ -14,11 +14,10 @@ COPY package.json /api/package.json
 RUN npm install
 
 # Copy API
-COPY server.js /api/server.js
-COPY app /api/app
-COPY constants /api/constants
+COPY server /api/server
+COPY public /api/public
+COPY bin /api/bin
 COPY routes /api/routes
-COPY database.js /api/database.js
 
 EXPOSE 8080
 
