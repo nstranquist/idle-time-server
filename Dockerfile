@@ -10,6 +10,8 @@ RUN apt-get -y install nodejs
 # Connection to Database
 ENV PORT=8080
 ENV API_SECRET="nodeRestApi"
+ENV NODE_ENV="production"
+ENV DB_PRODUCTION="placeholder"
 
 # Copy and Install Dependencies
 RUN mkdir /api
