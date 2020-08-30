@@ -1,6 +1,11 @@
 # Express API for Idle Time
 
-FROM node:14.5.0-buster-slim
+FROM ubuntu:20.04
+
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh | bash -
+RUN apt-get -y install nodejs
 
 # Connection to Database
 ENV PORT=8080
