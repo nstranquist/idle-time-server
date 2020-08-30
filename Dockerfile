@@ -19,7 +19,6 @@ RUN npm install
 
 # Copy API
 COPY server /api/server
-COPY public /api/public
 COPY bin /api/bin
 
 EXPOSE 8080
