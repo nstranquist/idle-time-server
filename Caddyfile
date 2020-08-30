@@ -1,0 +1,7 @@
+{
+    email nicostran@gmail.com
+}
+
+api.idletime.app {
+    reverse_proxy api-server:8080
+}
