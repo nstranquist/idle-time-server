@@ -1,7 +1,7 @@
 // app/api/controllers/presets.js
 
 const PresetSchema = require('../models/presets');
-const UserModel = require('../models/UserModel');
+const UserModel = require('../modules/users/user.model');
 const findUser = require('../utils/findUser');
 const findUserProperty = require('../utils/findUserProperty');
 const handleResponses = require('../utils/handleResponses');

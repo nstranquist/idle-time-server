@@ -1,0 +1,9 @@
+{
+  "title": {
+    "empty": ""
+  },
+  "priority": {
+    "negative": -6,
+    "tooHigh": 5
+  }
+}

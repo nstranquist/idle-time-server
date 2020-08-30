@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-// const validateUser = require('../lib/validateUser')
+// const validateUser = require('../lib/jwt-auth')
 
 // Require the index file
-const usersRouter = require('./users');
+const usersRouter = require('../modules/users/user.routes');
 const tasksRouter = require('./tasks');
 const presetsRouter = require('./presets');
 const projectsRouter = require('./projects');
@@ -28,7 +28,6 @@ const validateUser = (req, res, next) => {
 };
 
 module.exports = (params) => {
-  console.log('params:', params);
   router.get('/', async (req, res) => res.status(200).json({
     message: 'Welcome to Idle Time!',
   }));
@@ -42,19 +41,3 @@ module.exports = (params) => {
 
   return router;
 };
-
-// Old, from app.js:
-/*
-app.use('/auth', users);
-
-// private route
-app.use('/tasks', validateUser, tasks);
-
-app.use('/projects', validateUser, projects);
-
-app.use('/settings', validateUser, settings);
-
-app.use('/timetracking', validateUser, timetracking);
-
-app.use('/presets', validateUser, presets);
-*/

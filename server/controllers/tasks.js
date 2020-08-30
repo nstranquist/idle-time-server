@@ -1,7 +1,7 @@
 // tasks controller
 const mongoose = require('mongoose');
 const TaskSchema = require('../models/tasks');
-const userModel = require('../models/UserModel');
+const userModel = require('../modules/users/user.model');
 const findUser = require('../utils/findUser');
 const findUserProperty = require('../utils/findUserProperty');
 // const updateUserProperty = require('../../utils/updateUser.utils').updateUserProperty;

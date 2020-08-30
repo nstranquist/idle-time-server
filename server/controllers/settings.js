@@ -1,6 +1,6 @@
 // settings controller
 // const mongoose = require('mongoose')
-const userModel = require('../models/UserModel');
+const userModel = require('../modules/users/user.model');
 const findUser = require('../utils/findUser');
 const findUserProperty = require('../utils/findUserProperty');
 // const SettingsSchema = require('../models/settings')

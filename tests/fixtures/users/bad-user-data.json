@@ -1,0 +1,10 @@
+{
+  "email": {
+    "format": "bademail",
+    "empty": ""
+  },
+  "password": {
+    "length": "bad",
+    "empty": ""
+  }
+}

@@ -1,4 +1,4 @@
-const userModel = require('../models/UserModel');
+const userModel = require('../modules/users/user.model');
 
 const findUser = async (userId, next = undefined) => {
   let userResult;
@@ -8,8 +8,8 @@ const findUser = async (userId, next = undefined) => {
     return undefined;
   } catch (err) {
     console.log('error finding user:', err);
-    if (next) next();
-    else return undefined;
+    if (next) return next();
+    return undefined;
   }
 };
 

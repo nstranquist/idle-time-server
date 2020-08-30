@@ -1,9 +1,8 @@
 .env
 node_modules
-NOTES.txt
 
-config/
-config/database.js
-
-data/
-data/*
+package-lock.json
+build/
+yarn-error.log
+combined.log
+error.log

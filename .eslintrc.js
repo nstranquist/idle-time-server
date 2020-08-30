@@ -1,6 +1,14 @@
 module.exports = {
-  extends: 'airbnb-base',
+  extends: [
+    'prettier',
+    'airbnb-base',
+  ],
   rules: {
-    'max-len': [1, 120],
+    'max-len': [1, 125],
+    'func-names': ['error', 'never'],
+    'no-use-before-define': ['error', { functions: false, variables: false }],
+  },
+  parserOptions: {
+    ecmaVersion: 12,
   },
 };

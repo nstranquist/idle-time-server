@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const TaskSchema = require('./tasks');
-const ProjectSchema = require('./projects');
-const SettingsSchema = require('./settings');
-const TimeLogSchema = require('./timetracking');
-const PresetSchema = require('./presets');
+const TaskSchema = require('../../models/tasks');
+const ProjectSchema = require('../../models/projects');
+const SettingsSchema = require('../../models/settings');
+const TimeLogSchema = require('../../models/timetracking');
+const PresetSchema = require('../../models/presets');
 
 const saltRounds = 10;
 
