@@ -5,6 +5,8 @@ FROM node:14.5.0-buster-slim
 # Connection to Database
 ENV PORT=8080
 ENV API_SECRET="nodeRestApi"
+ENV NODE_ENV="production"
+ENV DB_PRODUCTION="placeholder"
 
 # Copy and Install Dependencies
 RUN sudo apt-get install python3
