@@ -7,6 +7,7 @@ ENV PORT=8080
 ENV API_SECRET="nodeRestApi"
 
 # Copy and Install Dependencies
+RUN sudo apt-get install python3
 RUN mkdir /api
 WORKDIR /api
 COPY package.json /api/package.json
