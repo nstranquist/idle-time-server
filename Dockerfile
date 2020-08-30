@@ -16,7 +16,6 @@ RUN npm install
 COPY server /api/server
 COPY public /api/public
 COPY bin /api/bin
-COPY routes /api/routes
 
 EXPOSE 8080
 
