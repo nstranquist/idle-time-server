@@ -1,4 +1,4 @@
-const UserModel = require('../modules/users/user.model');
+const UserModel = require('../models/user.model');
 const findUser = require('../utils/findUser');
 const findUserProperty = require('../utils/findUserProperty');
 

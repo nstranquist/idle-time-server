@@ -17,9 +17,7 @@ describe('User Service', () => {
   beforeEach(() => {
     MongoService.connect('mongodb://localhost:27017/idle_time_db')
       .then(() => {})
-      .catch((error) =>
-        console.log('[testing] error connecting to db:', error)
-      );
+      .catch((error) => console.log('[testing] error connecting to db:', error));
     UserModelMock = sinon.mock(UserModel);
   });
   afterEach(() => {

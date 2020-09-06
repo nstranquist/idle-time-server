@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-const UserModel = require('./user.model');
+const UserModel = require('../models/user.model');
 
 class UserService {
   // manual dependency injection

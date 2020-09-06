@@ -1,4 +1,6 @@
-const UserService = require('./user.service'); // import from module
+const UserService = require('../services/UserService'); // import from module
+
+// Include middleware to validate request body
 
 const createUser = (req, res, next) => {
   UserService.createUser(req.body)
@@ -11,6 +13,11 @@ const createUser = (req, res, next) => {
     });
 };
 
+const validateNewUser = (req, res, next) => {
+  next();
+};
+
 module.exports = {
   createUser,
+  validateNewUser
 };

@@ -1,4 +1,4 @@
-const UserModel = require('../modules/users/user.model');
+const UserModel = require('../models/user.model');
 
 // Updates a single user property
 const updateUserProperty = async (

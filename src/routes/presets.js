@@ -11,6 +11,13 @@ const presetsRouter = express.Router();
  *
  */
 presetsRouter.get('/', presetsController.getAll);
+
+/**
+ * @swagger
+ * /presets:
+ *  post:
+ *    description: create a new preset
+ */
 presetsRouter.post('/', presetsController.addOne);
 presetsRouter.put('/:id', presetsController.updateOne);
 presetsRouter.delete('/:id', presetsController.deleteOne);

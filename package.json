@@ -14,7 +14,7 @@
     "pretty": "prettier --write '**/*.{js,json}' '!node_modules/**'",
     "postpretty": "yarn lint --fix",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "swagger": "swagger-jsdoc -d build/docs/swaggerDoc.js build/routes/**.js"
+    "swagger": "swagger-jsdoc -d build/config/swagger.js build/routes/**.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

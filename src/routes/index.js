@@ -6,7 +6,7 @@ const router = express.Router();
 // const validateUser = require('../lib/jwt-auth')
 
 // Require the index file
-const usersRouter = require('../modules/users/user.routes');
+const usersRouter = require('./user.routes');
 const tasksRouter = require('./tasks');
 const presetsRouter = require('./presets');
 const projectsRouter = require('./projects');

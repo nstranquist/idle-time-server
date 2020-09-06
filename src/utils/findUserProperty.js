@@ -1,4 +1,4 @@
-const userModel = require('../modules/users/user.model');
+const userModel = require('../models/user.model');
 
 // userId: ObjectId, userProperties: 'field1, field2, field3, ...'
 const findUserProperty = async (userId, userProperties, nextError) => {

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userModel = require('../modules/users/user.model');
+const userModel = require('../models/user.model');
 
 const tokenExpirationTime = '4h';
 

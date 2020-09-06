@@ -10,6 +10,9 @@
     "/presets": {
       "get": {
         "description": "get all presets"
+      },
+      "post": {
+        "description": "create a new preset"
       }
     }
   },
