@@ -13,7 +13,7 @@ module.exports = {
   development: {
     logger: loggers.development,
     data: {
-      presets: path.join(__dirname, './data/prests.json'), // in development
+      presets: path.join(__dirname, './data/presets.json'), // in development
     },
     mongodb: {
       connection: process.env.DB_DEVELOPMENT,

@@ -1,9 +1,12 @@
-const http = require('http');
-// const https = require('https');
-// const fs = require('fs');
-const config = require('../server/config')[process.env.NODE_ENV || 'development'];
-const app = require('../server/app')(config);
-const db = require('../server/lib/db');
+import http from 'http';
+// import https from 'https'
+// import fs from 'fs'
+import startConfig from '../server/config';
+import startApp from '../server/app';
+import db from '../server/lib/db';
+
+const config = startConfig[process.env.NODE_ENV || 'development'];
+const app = startApp(config);
 
 const log = config.logger();
 

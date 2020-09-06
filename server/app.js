@@ -7,7 +7,6 @@ const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose'); // database configuration
 const MongoStore = require('connect-mongo')(session);
-const path = require('path');
 const auth = require('./lib/passport-auth');
 const router = require('./routes/index');
 require('dotenv').config();
@@ -23,7 +22,7 @@ module.exports = (config) => {
   // Define services
 
   // For resources
-  app.use('/', express.static(path.join(__dirname, '../public')));
+  // app.use('/', express.static(path.join(__dirname, '../public')));
   app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 
   app.set('secretKey', process.env.API_SECRET);// jwt secret token// connection to mongodb
