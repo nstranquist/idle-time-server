@@ -5,7 +5,7 @@
     ".eslintrc.json",
     ".babelrc",
     ".prettierrc",
-    "server/",
+    "src/",
     ".env"
   ],
   "verbose": true,

@@ -1,6 +1,4 @@
-const {
-  before, beforeEach, afterEach, after,
-} = require('mocha');
+const { before, beforeEach, afterEach, after } = require('mocha');
 require('dotenv').config();
 
 const APP_PORT = process.env.PORT || 8080;
@@ -22,9 +20,7 @@ function setupTest(test) {
     await restoreDatabase();
   });
 
-  afterEach(async () => {
-
-  });
+  afterEach(async () => {});
 
   after(async () => {
     await stop();

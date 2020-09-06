@@ -9,3 +9,6 @@ This project is using Node / Express for the api, Mongoose / MongoDb for the dat
 
 [![Coverage Status](https://coveralls.io/repos/github/nstranquist/idle-time-server/badge.svg)](https://coveralls.io/github/nstranquist/idle-time-server)
 
+### Linting
+
+To run the linter, make sure node_modules are installed, and then run `yarn pretty`

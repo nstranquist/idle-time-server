@@ -1,100 +1,100 @@
-'use strict'
-var sinon = require('sinon')
-var mongoose = require('mongoose')
+'use strict';
+var sinon = require('sinon');
+var mongoose = require('mongoose');
 
 var MethodTypes = Object.freeze({
   aggregate: 'aggregate',
   populate: 'populate',
   query: 'query',
-})
+});
 
 function getMethodType(method) {
-  const methodType = MethodTypes[method]
-  return methodType || MethodTypes.query
+  const methodType = MethodTypes[method];
+  return methodType || MethodTypes.query;
 }
 
 function chainMethod(type, object) {
-  var mockType
+  var mockType;
   switch (type) {
     case MethodTypes.aggregate:
-      mockType = new mongoose.Aggregate()
-      break
+      mockType = new mongoose.Aggregate();
+      break;
 
     case MethodTypes.populate:
-      mockType = object
-      break
+      mockType = object;
+      break;
 
     default:
-      mockType = new mongoose.Query()
-      break
+      mockType = new mongoose.Query();
+      break;
   }
 
   return function chain(method) {
-    var queryMock = sinon.mock(mockType)
-    this.owner.chainedMock = queryMock
-    makeChainable(queryMock, object, type)
-    makeChainableVerify(queryMock)
-    this.returns(queryMock.object)
+    var queryMock = sinon.mock(mockType);
+    this.owner.chainedMock = queryMock;
+    makeChainable(queryMock, object, type);
+    makeChainableVerify(queryMock);
+    this.returns(queryMock.object);
 
-    return queryMock.expects(method)
-  }
+    return queryMock.expects(method);
+  };
 }
 
 function makeChainable(mock, object, mockType) {
-  var expectsMethod = mock.expects
+  var expectsMethod = mock.expects;
 
-  mock.expects = function(method) {
-    mockType = mockType || getMethodType(method)
-    var expectation = expectsMethod.apply(mock, arguments)
-    expectation.owner = mock
-    expectation.chain = chainMethod(mockType, object).bind(expectation)
-    return expectation
-  }
+  mock.expects = function (method) {
+    mockType = mockType || getMethodType(method);
+    var expectation = expectsMethod.apply(mock, arguments);
+    expectation.owner = mock;
+    expectation.chain = chainMethod(mockType, object).bind(expectation);
+    return expectation;
+  };
 }
 
 function makeChainableVerify(mockResult) {
-  var originalVerify = mockResult.verify
+  var originalVerify = mockResult.verify;
   function chainedVerify() {
-    originalVerify.call(mockResult)
+    originalVerify.call(mockResult);
     if (mockResult.chainedMock) {
-      mockResult.chainedMock.verify()
+      mockResult.chainedMock.verify();
     }
   }
-  mockResult.verify = chainedVerify
+  mockResult.verify = chainedVerify;
 }
 
-var oldMock = sinon.mock
+var oldMock = sinon.mock;
 var newMock = function mock(object) {
-  var mockResult = oldMock.apply(this, arguments)
+  var mockResult = oldMock.apply(this, arguments);
 
   if (
     object &&
     (object instanceof mongoose.Model ||
       object.schema instanceof mongoose.Schema)
   ) {
-    makeChainable(mockResult, object)
-    makeChainableVerify(mockResult)
+    makeChainable(mockResult, object);
+    makeChainableVerify(mockResult);
   }
-  return mockResult
-}
+  return mockResult;
+};
 
-sinon.mock = newMock
+sinon.mock = newMock;
 
 function sandboxMock(object) {
-  var mockResult = oldMock.apply(null, arguments)
+  var mockResult = oldMock.apply(null, arguments);
 
   if (
     object &&
     (object instanceof mongoose.Model ||
       object.schema instanceof mongoose.Schema)
   ) {
-    makeChainable(mockResult, object)
-    makeChainableVerify(mockResult)
+    makeChainable(mockResult, object);
+    makeChainableVerify(mockResult);
   }
 
-  return this.add(mockResult)
+  return this.add(mockResult);
 }
 
 if (sinon.sandbox) {
-  sinon.sandbox.mock = sandboxMock
+  sinon.sandbox.mock = sandboxMock;
 }

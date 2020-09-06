@@ -8,7 +8,13 @@ const port = process.env.PORT || 8080;
 
 const path = `http://localhost:${port}/api`;
 
-const fetchUtil = async (token, extension, method, body = undefined, bodyName = undefined) => {
+const fetchUtil = async (
+  token,
+  extension,
+  method,
+  body = undefined,
+  bodyName = undefined
+) => {
   let result;
 
   const options = {
