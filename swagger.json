@@ -7,11 +7,6 @@
   "host": "http://localhost:8080",
   "swagger": "2.0",
   "paths": {
-    "/users": {
-      "get": {
-        "description": "This should return all users"
-      }
-    },
     "/presets": {
       "get": {
         "description": "get all presets"

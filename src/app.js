@@ -14,7 +14,7 @@ const swaggerDoc = require('../swagger.json');
 require('dotenv').config();
 
 module.exports = (config) => {
-  const { logger } = config;
+  const { log } = config;
 
   const app = express();
 
@@ -23,7 +23,7 @@ module.exports = (config) => {
   app.use(compression());
 
   // sets up swagger for app under /api-docs
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, { explorer: true }));
 
   // Define services
 
@@ -31,7 +31,7 @@ module.exports = (config) => {
   // app.use('/', express.static(path.join(__dirname, '../public')));
   app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 
-  app.set('secretKey', process.env.API_SECRET); // jwt secret token// connection to mongodb
+  app.set('secretKey', config.jwtSecret); // jwt secret token// connection to mongodb
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -42,7 +42,7 @@ module.exports = (config) => {
     app.set('trust proxy', 'loopback'); // where 'loopback' is localhost
     app.use(
       session({
-        secret: process.env.SESSION_SECRET || 'another secret 12345',
+        secret: config.sessionSecret,
         name: 'sessionId', // to further hide whether this is express server or not
         proxy: true, // makes adjustments to how session management works
         cookie: { secure: true }, // force browser to only send secure cookies
@@ -54,14 +54,14 @@ module.exports = (config) => {
   } else if (app.get('env') === 'development' || app.get('env') === 'test') {
     app.use(
       session({
-        secret: process.env.SESSION_SECRET || 'secret 12345',
+        secret: config.sessionSecret,
         resave: true, // session will stay active if it wasn't changed
         saveUninitialized: false, // to prevent getting empty objects in database
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
       })
     );
   } else {
-    logger.fatal(
+    log.fatal(
       'Unknown development environment. Please specify in .env. Exiting'
     );
     process.exit(1);
@@ -100,7 +100,7 @@ module.exports = (config) => {
         message: 'Resource not found',
       });
     } else if (err) {
-      // logger('error:', err.stack);
+      // log('error:', err.stack);
       res.status(400).json({ ok: false, message: 'Something looks wrong', error: err.stack });
     } else {
       res.status(500).json({ ok: false, message: 'Internal Error' });

@@ -2,33 +2,48 @@ require('dotenv').config();
 const bunyan = require('bunyan');
 const path = require('path');
 
-const loggers = {
-  development: () => bunyan.createLogger({ name: 'development', level: 'debug' }),
-  production: () => bunyan.createLogger({ name: 'production', level: 'info' }),
-  test: () => bunyan.createLogger({ name: 'test', level: 'fatal' }),
-};
+module.exports = () => {
+  const nodeEnv = process.env.NODE_ENV || 'development';
 
-module.exports = {
-  port: process.env.PORT || 8080,
-  development: {
-    logger: loggers.development,
+  let environmentOptions = {};
+
+  switch (nodeEnv) {
+  case 'production':
+    environmentOptions = {
+      log: bunyan.createLogger({ name: 'production', level: 'info' }),
+      db: {
+        connection: process.env.DB_PRODUCTION,
+      },
+    };
+    break;
+  case 'development':
+    environmentOptions = {
+      log: bunyan.createLogger({ name: 'development', level: 'debug' }),
+      db: {
+        connection: process.env.DB_DEVELOPMENT,
+      },
+    };
+    break;
+  case 'test': case 'testing':
+    environmentOptions = {
+      log: bunyan.createLogger({ name: 'test', level: 'fatal' }),
+      db: {
+        connection: process.env.DB_TEST,
+      },
+    };
+    break;
+  default:
+    environmentOptions = {};
+    break;
+  }
+
+  return {
+    ...environmentOptions, // logger, db
+    port: process.env.PORT || 8080,
     data: {
       presets: path.join(__dirname, './data/presets.json'), // in development
     },
-    mongodb: {
-      connection: process.env.DB_DEVELOPMENT,
-    },
-  },
-  production: {
-    logger: loggers.production,
-    mongodb: {
-      connection: process.env.DB_PRODUCTION,
-    },
-  },
-  test: {
-    logger: loggers.test,
-    mongodb: {
-      connection: process.env.DB_TEST,
-    },
-  },
+    jwtSecret: process.env.API_SECRET,
+    sessionSecret: process.env.SESSION_SECRET || 'another secret',
+  };
 };

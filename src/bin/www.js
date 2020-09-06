@@ -1,14 +1,13 @@
 import http from 'http';
 // import https from 'https'
 // import fs from 'fs'
-import startConfig from '../config';
+import initConfig from '../config';
 import startApp from '../app';
 import db from '../lib/db';
 
-const config = startConfig[process.env.NODE_ENV || 'development'];
-const app = startApp(config);
+const config = initConfig();
 
-const log = config.logger();
+const app = startApp(config);
 
 // Normlize port into a number, string, or false
 function normalizePort(val) {
@@ -26,7 +25,7 @@ function normalizePort(val) {
 }
 
 // Get port from environment and store in express
-const port = normalizePort(process.env.PORT || '8080');
+const port = normalizePort(config.port);
 
 // FOR SSL ENCRYPTION
 // const options = {
@@ -38,19 +37,19 @@ const port = normalizePort(process.env.PORT || '8080');
 const server = http.createServer(app);
 // const server = https.createServer(options, app).listen(port);
 
-db.connect(config.mongodb.connection)
+db.connect(config.db.connection)
   .then(() => {
-    log.info('Connected to MongoDB');
+    config.log.info('Connected to MongoDB');
     server.listen(port);
   })
   .catch((err) => {
-    log.fatal(`fdjlkdfjslkf   ${err}`);
+    config.log.fatal(`fdjlkdfjslkf   ${err}`);
   });
 
 server.on('listening', () => {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  log.info(`Listening on ${bind}`);
+  config.log.info(`Listening on ${bind}`);
 });
 
 // Handle server errors
@@ -64,15 +63,15 @@ server.on('error', (error) => {
   // handle specific listen errors with friendly messages
   switch (error.code) {
   case 'EACCES':
-    log.fatal(`${bind} requires elevated privileges`);
+    config.log.fatal(`${bind} requires elevated privileges`);
     process.exit(1);
     break;
   case 'EADDRINUSE':
-    log.fatal(`${bind} is already in use`);
+    config.log.fatal(`${bind} is already in use`);
     process.exit(1);
     break;
   default:
-    log.info(error);
+    config.log.info(error);
     // throw error;
   }
 });
@@ -92,7 +91,7 @@ server.on('error', (error) => {
 //   });
 // } else {
 //   // if process is a child, connect to db and listen
-//   db.connect(config.mongodb.connection)
+//   db.connect(config.db.connection)
 //     .then(() => {
 //       log.info('Connected to MongoDB');
 //       server.listen(port);
