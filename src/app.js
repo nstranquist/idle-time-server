@@ -7,8 +7,10 @@ const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose'); // database configuration
 const MongoStore = require('connect-mongo')(session);
+const swaggerUi = require('swagger-ui-express');
 const auth = require('./lib/passport-auth');
 const indexRouter = require('./routes/index');
+const swaggerDoc = require('../swagger.json');
 require('dotenv').config();
 
 module.exports = (config) => {
@@ -19,6 +21,9 @@ module.exports = (config) => {
   app.use(cors());
   app.use(helmet());
   app.use(compression());
+
+  // sets up swagger for app under /api-docs
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
   // Define services
 
@@ -82,6 +87,7 @@ module.exports = (config) => {
   // });
 
   // handle errors
+  // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
     // console.log('error handler:', err);
 

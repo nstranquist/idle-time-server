@@ -12,3 +12,7 @@ This project is using Node / Express for the api, Mongoose / MongoDb for the dat
 ### Linting
 
 To run the linter, make sure node_modules are installed, and then run `yarn pretty`
+
+### Swagger
+
+To test documenation, run: `npx swagger-jsdoc -d src/docs/swaggerDoc.js src/routes/index.js`

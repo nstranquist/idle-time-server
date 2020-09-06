@@ -31,8 +31,14 @@ const validateUser = (req, res, next) => {
 module.exports = (params = undefined) => {
   if (params) console.log('params:', params);
 
+  /**
+   * @swagger
+   * /users:
+   *   get:
+   *     description: This should return all users
+   */
   router.get('/', async (req, res) => res.status(200).json({
-    message: 'Welcome to Idle Time!',
+    message: 'V1: Welcome to Idle Time Server!',
   }));
 
   router.use('/auth', usersRouter);

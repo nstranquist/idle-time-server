@@ -3,6 +3,13 @@ const presetsController = require('../controllers/presets');
 
 const presetsRouter = express.Router();
 
+/**
+ * @swagger
+ * /presets:
+ *   get:
+ *     description: get all presets
+ *
+ */
 presetsRouter.get('/', presetsController.getAll);
 presetsRouter.post('/', presetsController.addOne);
 presetsRouter.put('/:id', presetsController.updateOne);
