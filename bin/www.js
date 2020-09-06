@@ -67,16 +67,16 @@ server.on('error', (error) => {
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      log.fatal(`${bind} requires elevated privileges`);
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      log.fatal(`${bind} is already in use`);
-      process.exit(1);
-      break;
-    default:
-      log.info(error);
+  case 'EACCES':
+    log.fatal(`${bind} requires elevated privileges`);
+    process.exit(1);
+    break;
+  case 'EADDRINUSE':
+    log.fatal(`${bind} is already in use`);
+    process.exit(1);
+    break;
+  default:
+    log.info(error);
     // throw error;
   }
 });
