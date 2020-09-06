@@ -8,13 +8,14 @@ const cors = require('cors');
 const mongoose = require('mongoose'); // database configuration
 const MongoStore = require('connect-mongo')(session);
 const auth = require('./lib/passport-auth');
-const router = require('./routes/index');
+const indexRouter = require('./routes/index');
 require('dotenv').config();
 
 module.exports = (config) => {
   const { logger } = config;
 
   const app = express();
+
   app.use(cors());
   app.use(helmet());
   app.use(compression());
@@ -29,7 +30,6 @@ module.exports = (config) => {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
-
   app.use(cookieParser());
 
   // Set the express session according to the development environment
@@ -66,40 +66,38 @@ module.exports = (config) => {
   app.use(auth.session);
   app.use(auth.setUser);
 
-  // API
+  // API route handling
   app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to idletime. Sign in for more' });
+    res.status(200).json({ message: 'Welcome to IdleTime. Use /v1 to access the api' });
   });
 
-  // base api route
-  const params = { hello: 'world' /* services */ };
-  app.use('/api', router(params));
+  app.use('/v1', indexRouter());
 
   // express doesn't consider not found 404 as an error so we need to handle 404 explicitly
   // handle 404 error
-  app.use((req, res, next) => {
-    console.log('throwing new error that wasn\'t handled');
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
+  // app.use((req, res, next) => {
+  //   const err = new Error('Not Found');
+  //   err.status = 404;
+  //   next(err);
+  // });
 
   // handle errors
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
     // console.log('error handler:', err);
 
     // idea: check for an attached "error" field in request, and see if can give more custom error msessage
     // if(err.status && err.message)
     //   res.status(err.status).json({ status: "error", message: err.message})
-    if (err.status === 404) {
+    if (err && err.status && err.status === 404) {
       res.status(404).json({
         ok: false,
         message: 'Resource not found',
       });
+    } else if (err) {
+      // logger('error:', err.stack);
+      res.status(400).json({ ok: false, message: 'Something looks wrong', error: err.stack });
     } else {
-      res
-        .status(500)
-        .json({ ok: false, message: 'Internal Error: Something looks wrong' });
+      res.status(500).json({ ok: false, message: 'Internal Error' });
     }
   });
 

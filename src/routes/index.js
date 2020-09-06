@@ -28,7 +28,9 @@ const validateUser = (req, res, next) => {
   );
 };
 
-module.exports = (params) => {
+module.exports = (params = undefined) => {
+  if (params) console.log('params:', params);
+
   router.get('/', async (req, res) => res.status(200).json({
     message: 'Welcome to Idle Time!',
   }));
