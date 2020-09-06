@@ -1,13 +1,11 @@
 # IdleTime Server
 This is the server for the IdleTime app
 
+### Architecture Overview
 
-### Recent Updates:
-- Authentication fully working with MongoDB
+This project is using Node / Express for the api, Mongoose / MongoDb for the database layer.
 
-### Future Tasks:
-- See `todo` file
-- Swap out movies boilerplate CRUD api code for Tasks feature implementation
-- ...
+### Code Coverage
 
+[![Coverage Status](https://coveralls.io/repos/github/nstranquist/idle-time-server/badge.svg)](https://coveralls.io/github/nstranquist/idle-time-server)
 
