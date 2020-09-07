@@ -2,7 +2,7 @@ const chai = require('chai');
 
 const { expect } = chai;
 
-const { connect } = require('../../../server/lib/db');
+const { connect } = require('../../../src/lib/db');
 
 describe('mongodb.connect', () => {
   it('should return a function', () => {

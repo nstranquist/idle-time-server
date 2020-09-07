@@ -26,9 +26,7 @@ services:
       - caddy
     environment:
       - PORT=8080
-      - API_SECRET=nodeRestApi
-      - MONGO_DB_CONN=mongodb+srv://root:12wgfsB5S1UYJ970@idletime-cluster1.gk0uj.mongodb.net/production?retryWrites=true&w=majority
-      - NODE_ENV=production
-      
+      - API_SECRET=""
+      - MONGO_DB_CONN=""
     ports:
       - 8080:8080

@@ -1,8 +1,14 @@
 .env
-node_modules
+node_modules/
 
 package-lock.json
 build/
+dist/
 yarn-error.log
 combined.log
 error.log
+.nyc_output
+coverage
+
+NOTES.txt
+todo

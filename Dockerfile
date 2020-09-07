@@ -20,8 +20,15 @@ COPY package.json /api/package.json
 RUN npm install
 
 # Copy API
+<<<<<<< HEAD
 COPY server /api/server
 COPY bin /api/bin
+=======
+COPY src /api/src
+COPY swagger.json /api/swagger.json
+
+RUN npm build
+>>>>>>> master
 
 EXPOSE 8080
 

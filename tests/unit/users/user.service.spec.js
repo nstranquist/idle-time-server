@@ -3,11 +3,11 @@ const chai = require('chai');
 const sinon = require('sinon');
 const mongoose = require('mongoose');
 require('../../fixtures/sinon-mongoose');
-const MongoService = require('../../../server/lib/db');
+const MongoService = require('../../../src/lib/db');
 
 const { expect } = chai;
-const UserService = require('../../../server/modules/users/user.service');
-const UserModel = require('../../../server/modules/users/user.model');
+const UserService = require('../../../src/services/UserService');
+const UserModel = require('../../../src/models/user.model');
 
 const { UserFixture, ErrorFixture } = require('../../fixtures');
 
@@ -16,9 +16,7 @@ let UserModelMock;
 describe('User Service', () => {
   beforeEach(() => {
     MongoService.connect('mongodb://localhost:27017/idle_time_db')
-      .then(() => {
-
-      })
+      .then(() => {})
       .catch((error) => console.log('[testing] error connecting to db:', error));
     UserModelMock = sinon.mock(UserModel);
   });
@@ -30,7 +28,9 @@ describe('User Service', () => {
   });
   describe('createUser', () => {
     // eslint-disable-line one-var-declaration-per-line
-    let newUser; let expectedUserResult; let expectedError;
+    let newUser;
+    let expectedUserResult;
+    let expectedError;
 
     it('should create a user and add to database', async () => {
       newUser = UserFixture.newUser;
@@ -60,8 +60,6 @@ describe('User Service', () => {
         expect.fail(error);
       }
     });
-    it.skip('should throw error with bad user data', () => {
-
-    });
+    it.skip('should throw error with bad user data', () => {});
   });
 });
