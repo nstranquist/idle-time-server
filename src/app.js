@@ -50,11 +50,10 @@ module.exports = (config) => {
         secret: config.sessionSecret,
         name: 'sessionId', // to further hide whether this is express server or not
         proxy: true, // makes adjustments to how session management works
-        cookie: { secure: true, maxAge: 60000 }, // force browser to only send secure cookies
+        cookie: { secure: true, maxAge: 60000 }, // 'secure: true' to force browser to only send secure cookies
         resave: true, // session will stay active if it wasn't changed
         saveUninitialized: false, // to prevent getting empty objects in database
-        store: new MongoStore({ mongooseConnection: mongoose.connection }),
-        secure: true
+        store: new MongoStore({ mongooseConnection: mongoose.connection })
       })
     );
   } else if (app.get('env') === 'development') {

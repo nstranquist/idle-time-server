@@ -28,5 +28,6 @@ services:
       - PORT=8080
       - API_SECRET=""
       - MONGO_DB_CONN=""
+      - SESSION_SECRET=""
     ports:
       - 8080:8080
