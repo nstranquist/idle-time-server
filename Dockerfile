@@ -16,10 +16,10 @@ COPY package.json /api/package.json
 RUN npm install
 
 # Copy API
-COPY server /api/server
-COPY public /api/public
-COPY bin /api/bin
-COPY routes /api/routes
+COPY src /api/src
+COPY swagger.json /api/swagger.json
+
+RUN npm build
 
 EXPOSE 8080
 
