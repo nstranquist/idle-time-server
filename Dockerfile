@@ -26,7 +26,7 @@ COPY src /api/src
 COPY swagger.json /api/swagger.json
 COPY .babelrc /api/.babelrc
 
-RUN yarn build
+RUN yarn dev
 
 EXPOSE 8080
 
