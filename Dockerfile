@@ -22,6 +22,7 @@ RUN npm install
 # Copy API
 COPY src /api/src
 COPY swagger.json /api/swagger.json
+COPY .babelrc /api/.babelrc
 
 RUN npm run build
 
