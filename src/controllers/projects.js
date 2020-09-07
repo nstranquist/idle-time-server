@@ -18,7 +18,7 @@ module.exports = {
         res
           .status(200)
           .json({
-            status: 'success',
+            ok: true,
             message: 'found your projects',
             data: { projects },
           });
@@ -46,7 +46,7 @@ module.exports = {
       res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'added new project',
           data: { project: updatedUser.projects[length] },
         });
@@ -74,7 +74,7 @@ module.exports = {
       res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'updated your project',
           data: { project },
         });
@@ -109,7 +109,7 @@ module.exports = {
       res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'removed user project',
           data: { id: projectId },
         });

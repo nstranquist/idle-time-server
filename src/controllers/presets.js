@@ -24,7 +24,7 @@ module.exports = {
       const { presets } = userPresets.result;
       console.log('presets found:', presets);
       res.status(200).json({
-        status: 'success',
+        ok: true,
         message: 'Found your task presets',
         data: { presets },
       });
@@ -47,7 +47,7 @@ module.exports = {
       const updatedUser = await userResult.save();
       console.log('updated user:', updatedUser);
       res.status(201).json({
-        status: 'success',
+        ok: true,
         message: 'added your preset',
         // should return the entire object so that can get defaults created by mongoose
         data: { preset: updatedUser.presets[presetsLength - 1] },
@@ -84,7 +84,7 @@ module.exports = {
           else {
             console.log('result (inside of mongodb):', result);
             res.status(200).json({
-              type: 'success',
+              ok: true,
               message: 'updated your preset',
               data: { preset: result },
             });
@@ -110,7 +110,7 @@ module.exports = {
     if (presetIndex < 0) {
       return res
         .status(400)
-        .json({ status: 'error', message: 'preset not found', data: null });
+        .json({ ok: false, message: 'preset not found', data: null });
     }
 
     userResult.presets.splice(presetIndex, 1);
@@ -118,7 +118,7 @@ module.exports = {
     try {
       await userResult.save().then(() => {
         res.status(200).json({
-          type: 'success',
+          ok: true,
           message: 'deleted your preset',
           data: { id: presetId },
         });
@@ -136,14 +136,14 @@ module.exports = {
   //   if(!userResult) next();
 
   //   const presetIndex = await userResult.presets.findIndex(preset => preset._id.toString() === taskId);
-  //   if(presetIndex < 0) return res.status(400).json({status: "error", message: "preset not found", data: null })
+  //   if(presetIndex < 0) return res.status(400).json({ok: false, message: "preset not found", data: null })
 
   //   userResult.presets.splice(presetIndex, 1)
 
   //   try {
   //     await userResult.save().then(() => {
   //       res.status(200).json({
-  //         type: "success",
+  //         ok: true,
   //         message: "deleted your preset",
   //         data: { id: taskId }
   //       })

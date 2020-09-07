@@ -26,25 +26,25 @@ class UserService {
       return {
         error: true,
         statusCode: 400,
-        json: { status: 'error', message: 'User not found' }
+        json: { ok: false, message: 'User not found' }
       };
     } catch (error) {
       return {
         error: true,
         statusCode: 400,
-        json: { status: 'error', message: error.toString() }
+        json: { ok: false, message: error.toString() }
       };
     }
   }
 
   async compareUserPassword(candidatePassword, password) {
     if (bcrypt.compareSync(candidatePassword, password)) {
-      return { json: { status: 'success', message: 'User logged in successfully' } };
+      return { json: { ok: true, message: 'User logged in successfully' } };
     }
     return {
       error: true,
       statusCode: 404,
-      json: { status: 'error', message: 'Invalid password' }
+      json: { ok: false, message: 'Invalid password' }
     };
   }
 
@@ -73,7 +73,7 @@ class UserService {
       return {
         error: true,
         statusCode: 400,
-        json: { status: 'error', message: error.toString() }
+        json: { ok: false, message: error.toString() }
       };
     }
   }

@@ -88,7 +88,7 @@ module.exports = (config) => {
 
   // API route handling
   app.get('/', (req, res) => {
-    res.status(200).json({ message: 'Welcome to IdleTime. Use /v1 to access the api' });
+    res.status(200).json({ ok: true, message: 'Welcome to IdleTime. Use /v1 to access the api' });
   });
 
   app.use('/v1', indexRouter());
@@ -108,7 +108,7 @@ module.exports = (config) => {
 
     // idea: check for an attached "error" field in request, and see if can give more custom error msessage
     // if(err.status && err.message)
-    //   res.status(err.status).json({ status: "error", message: err.message})
+    //   res.status(err.status).json({ ok: false, message: err.message})
     if (err && err.status && err.status === 404) {
       res.status(404).json({
         ok: false,

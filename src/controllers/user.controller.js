@@ -12,11 +12,11 @@ const create = async (req, res, next) => {
   // the 'try/catch' error boundary is done inside of the UserService
   const isUniqueEmail = await userService.ensureUniqueEmail(email);
 
-  if (!isUniqueEmail) return res.status(400).json({ status: 'error', message: 'User already exists' });
+  if (!isUniqueEmail) return res.status(400).json({ ok: false, message: 'User already exists' });
 
   const response = await userService.createUser(req.body);
   if (response.error) return res.status(response.statusCode).json(response.json);
-  return res.status(201).json({ status: 'success', message: 'User created successfully' });
+  return res.status(201).json({ ok: true, message: 'User created successfully' });
 };
 
 const authenticate = async (req, res, next) => {
@@ -55,12 +55,12 @@ const authenticate = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   console.log('out of commission');
-  return res.status(400).json({ status: 'error', message: 'Feature not implemented yet' });
+  return res.status(400).json({ ok: false, message: 'Feature not implemented yet' });
 };
 
 const getUserData = async (req, res, next) => {
   console.log('out of commission');
-  return res.status(400).json({ status: 'error', message: 'Feature not implemented yet' });
+  return res.status(400).json({ ok: false, message: 'Feature not implemented yet' });
 };
 
 module.exports = {

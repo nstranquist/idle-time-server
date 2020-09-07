@@ -6,7 +6,7 @@ const validateUser = (req, res, next) => {
     req.app.get('secretKey'),
     (err, decoded) => {
       if (err) {
-        return res.json({ status: 'error', message: err.message, data: null });
+        return res.json({ ok: false, message: err.message, data: null });
       }
       // add user id to request
       req.body.userId = decoded.id;

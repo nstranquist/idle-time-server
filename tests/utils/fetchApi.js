@@ -29,10 +29,10 @@ const fetchUtil = async (
 
   try {
     result = await fetch(path + extension, options);
-    log('status:', result.status);
+    log('status:', result.status); // or statusCode
     const jsonresult = await result.json();
     log('result:', jsonresult);
-    if (jsonresult.status === 'success' || result.status < 400) {
+    if (jsonresult.ok || result.status < 400) {
       return { ok: true, jsonresult };
     }
 

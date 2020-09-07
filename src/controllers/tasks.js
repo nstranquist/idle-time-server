@@ -70,7 +70,7 @@ module.exports = {
       const updatedUser = await userResult.save();
       console.log('updated user tasks:', updatedUser.tasks);
       res.status(201).json({
-        status: 'success',
+        ok: true,
         message: 'Successfully added new task',
         data: {
           task: userResult.tasks.tasks[tasksLength - 1],
@@ -79,7 +79,7 @@ module.exports = {
       });
     } catch (err) {
       res.status(400).json({
-        status: 'error',
+        ok: false,
         message: 'error adding new task',
         data: null,
       });
@@ -123,7 +123,7 @@ module.exports = {
         res
           .status(500)
           .json({
-            status: 'error',
+            ok: false,
             message: 'Internal error, project not found',
             data: null,
           });
@@ -136,7 +136,7 @@ module.exports = {
       res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'updated user task',
           data: { taskData: taskItem },
         });
@@ -144,7 +144,7 @@ module.exports = {
       console.log('error:', error);
       res
         .status(400)
-        .json({ status: 'error', message: error.toString(), data: null });
+        .json({ ok: false, message: error.toString(), data: null });
     }
   },
   updateOrder: async (req, res, next) => {
@@ -161,11 +161,11 @@ module.exports = {
       const oldOrder = user.tasks.order;
 
       // if order isn't different from previous order, don't modify data
-      if (JSON.stringify(order) == JSON.stringify(oldOrder)) {
+      if (JSON.stringify(order) === JSON.stringify(oldOrder)) {
         return res
           .status(400)
           .json({
-            status: 'error',
+            ok: false,
             message: 'order is the same as before',
             data: null,
           });
@@ -180,7 +180,7 @@ module.exports = {
       return res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'updated the tasks order',
           data: { order: updatedUser.tasks.order },
         });
@@ -188,7 +188,7 @@ module.exports = {
       console.log('error updating task order:', error);
       res
         .status(400)
-        .json({ status: 'error', message: error.toString(), data: null });
+        .json({ ok: false, message: error.toString(), data: null });
     }
   },
   deleteOne: async (req, res, next) => {
@@ -214,7 +214,7 @@ module.exports = {
         tasks
       );
       return res.status(400).json({
-        status: 'error',
+        ok: false,
         message: 'task with id not found, could not delete',
         data: null,
       });
@@ -235,7 +235,7 @@ module.exports = {
       const updatedUser = await user.save();
       console.log('updated user after delete:', updatedUser);
       res.status(200).json({
-        status: 'success',
+        ok: true,
         message: responseMessage,
         data: { order: user.tasks.order },
       });
@@ -251,7 +251,7 @@ module.exports = {
   //     else {
   //       console.log('found tasksOrder:', tasksOrder)
   //       res.status(200).json({
-  //         status: 'success',
+  //         ok: true,
   //         message: "Foudn the Tasks Order",
   //         data: { tasksOrder: tasksOrder }
   //       })
@@ -285,7 +285,7 @@ module.exports = {
 
 //   } catch(error) {
 //     console.log('error updating task:', error)
-//     res.status(400).json({ status: 'error', message: error.toString(), data: null })
+//     res.status(400).json({ ok: false, message: error.toString(), data: null })
 //   }
 // find task;
 // const foundTask = await tasks.find(task => task._id === taskId)
@@ -310,7 +310,7 @@ module.exports = {
 //   // const updatedUser = await userResult.save()
 //   // console.log("updated user:", updatedUser)
 //   res.status(200).json({
-//     status: "success",
+//     ok: true,
 //     message: "updated your task",
 //     data: {taskData: userResult.update}
 //   })
@@ -322,7 +322,7 @@ module.exports = {
 //   .then(async user => {
 //     if(!user) return next();
 //     const foundIndex = await user.tasks.tasks.findIndex(task => task._id.toString() === taskId)
-//     if(foundIndex < 0) return res.status(400).json({ status: "error", message: "task not found by id", data: null})
+//     if(foundIndex < 0) return res.status(400).json({ ok: false, message: "task not found by id", data: null})
 //     const newTask = {...user.tasks.tasks[foundIndex], ...taskData}
 //     try {
 //       // BlogPost.findById(req.params.postId, function(err, post) {
@@ -344,13 +344,13 @@ module.exports = {
 //         { "$set": { "tasks.$": newTask } }
 //       )
 //       console.log("result:", result)
-//       res.status(200).json({ status: "success", message: "updated your task", data: {taskData: newTask}})
+//       res.status(200).json({ ok: true, message: "updated your task", data: {taskData: newTask}})
 //     } catch(error) {
 //       console.log('error updating:', error)
-//       res.status(400).json({ status: "error", message: error.toString(), data: null })
+//       res.status(400).json({ ok: false, message: error.toString(), data: null })
 //     }
 //   })
 //   .catch(err => {
 //     console.log('error updating task:', err)
-//     res.status(400).json({ status: 'error', message: err.toString(), data: null })
+//     res.status(400).json({ ok: false, message: err.toString(), data: null })
 //   })

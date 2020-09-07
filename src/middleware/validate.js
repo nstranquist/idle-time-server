@@ -6,7 +6,7 @@ const validateBody = (schema) => async (req, res, next) => {
     let message = error;
     if (error.details && error.details[0] && error.details[0].message) message = error.details[0].message;
     return res.status(400).json({
-      status: 'error',
+      ok: false,
       message
     });
   }

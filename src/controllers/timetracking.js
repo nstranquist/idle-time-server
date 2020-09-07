@@ -19,7 +19,7 @@ module.exports = {
       res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'found your timelogs',
           data: { timelogs },
         });
@@ -32,7 +32,7 @@ module.exports = {
       return res
         .status(400)
         .json({
-          status: 'error',
+          ok: false,
           message: 'timelog data not provided',
           data: null,
         });
@@ -48,14 +48,14 @@ module.exports = {
       const updatedUser = await user.save();
       console.log('updated user:', updatedUser);
       return res.status(200).json({
-        status: 'success',
+        ok: true,
         message: 'added your timelog',
         data: { timelog: updatedUser.timelogs[length] },
       });
     } catch (error) {
       console.log('error:', error);
       return res.status(400).json({
-        status: 'error',
+        ok: false,
         message: 'could not add the timelog to user\'s timelogs',
         data: null,
       });
@@ -77,7 +77,7 @@ module.exports = {
       return res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'updated your timelog',
           data: { timelog: timelogId },
         });
@@ -86,7 +86,7 @@ module.exports = {
       return res
         .status(400)
         .json({
-          status: 'error',
+          ok: false,
           message: 'could not update your timelog',
           data: null,
         });
@@ -106,7 +106,7 @@ module.exports = {
       return res
         .status(400)
         .json({
-          status: 'error',
+          ok: false,
           message: 'Could not find timelog with that id',
           data: null,
         });
@@ -118,7 +118,7 @@ module.exports = {
       const updatedUser = await user.save();
       console.log('updated user after delete:', updatedUser);
       res.status(200).json({
-        status: 'success',
+        ok: true,
         message: 'deleted user\'s timelog successfully',
         data: { id: timelogId },
       });
@@ -134,7 +134,7 @@ module.exports = {
 
 //   if(!timelogId)
 //     res.status(400).json({
-//       status: "error",
+//       ok: false,
 //       message: "did not specify an id to get the timelog with",
 //       data: null
 //     })
@@ -153,7 +153,7 @@ module.exports = {
 //           priority: timelog.priority
 //         }
 //         res.status(200).json({
-//           status: "success",
+//           ok: true,
 //           message: "Found your timelog",
 //           data: { timelog: foundTimelog }
 //         })
@@ -164,7 +164,7 @@ module.exports = {
 
 // if(!timelogId || !timelogData)
 //     res.status(400).json({
-//       status: "error",
+//       ok: false,
 //       message: "Did not receive the id or data to update your time log with",
 //       data: null
 //     })
@@ -175,7 +175,7 @@ module.exports = {
 //       else {
 //         console.log('updated timelog with result:', result)
 //         res.status(200).json({
-//           status: "success",
+//           ok: true,
 //           message: "Upated timelog successfully",
 //           data: {timelog: result}
 //         })
@@ -184,7 +184,7 @@ module.exports = {
 
 // if(!req.params.id) {
 //   res.status(400).json({
-//     status: "error",
+//     ok: false,
 //     message: "Did not receive the id of the timelog to delete",
 //     data: null
 //   })
@@ -197,7 +197,7 @@ module.exports = {
 //     }
 //     else {
 //       res.status(200).json({
-//         status: "success",
+//         ok: true,
 //         message: "Deleted timelog successfully",
 //         data: null
 //       })

@@ -19,7 +19,7 @@ module.exports = {
       res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'found your settings!',
           data: { settings },
         });
@@ -46,7 +46,7 @@ module.exports = {
       res
         .status(200)
         .json({
-          status: 'success',
+          ok: true,
           message: 'found your settings!',
           data: { settingsSection: userSettingsSection },
         });
@@ -54,7 +54,7 @@ module.exports = {
       res
         .status(400)
         .json({
-          status: 'error',
+          ok: false,
           message: 'could not find the user\'s settings',
           data: null,
         });
@@ -75,14 +75,14 @@ module.exports = {
       const updatedUser = await user.save();
       console.log('updated user:', updatedUser);
       res.status(200).json({
-        status: 'success',
+        ok: true,
         message: `updated user ${sectionName} settings`,
         data: { sectionSettings: updatedUser.settings[sectionName] },
       });
     } catch (error) {
       console.log('error:', error);
       res.status(400).json({
-        status: 'error',
+        ok: false,
         message: `could not update user ${sectionName} settings`,
         data: null,
       });
@@ -103,14 +103,14 @@ module.exports = {
       const updatedUser = await user.save();
       console.log('updated user settings:', updatedUser.settings);
       res.status(200).json({
-        status: 'success',
+        ok: true,
         message: 'updated user settings',
         data: { settings: updatedUser.settings },
       });
     } catch (error) {
       console.log('error:', error);
       res.status(400).json({
-        status: 'error',
+        ok: false,
         message: 'could not update user settings',
         data: null,
       });

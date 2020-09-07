@@ -12,7 +12,7 @@ module.exports = {
         res
           .status(400)
           .json({
-            status: 'error',
+            ok: false,
             message: 'The name is not defined',
             data: null,
           });
@@ -21,7 +21,7 @@ module.exports = {
         res
           .status(400)
           .json({
-            status: 'error',
+            ok: false,
             message: 'The email is not defined',
             data: null,
           });
@@ -29,7 +29,7 @@ module.exports = {
         res
           .status(400)
           .json({
-            status: 'error',
+            ok: false,
             message: 'The password is not defined',
             data: null,
           });
@@ -53,7 +53,7 @@ module.exports = {
       }
       if (userInfo) {
         res.status(400).json({
-          status: 'error',
+          ok: false,
           message: 'This email is already taken',
           data: null,
         });
@@ -85,7 +85,7 @@ module.exports = {
             } else {
               // console.log('user password created:', result.user.password)
               res.status(201).json({
-                status: 'success',
+                ok: true,
                 message: 'User added successfully!',
                 data: null,
               });
@@ -111,7 +111,7 @@ module.exports = {
           // userInfo.save();
 
           res.status(200).json({
-            status: 'success',
+            ok: true,
             message: 'user found!',
             data: {
               userData: {
@@ -128,7 +128,7 @@ module.exports = {
         } else {
           console.log('bcrypt compared the two and did not find them equal');
           res.status(400).json({
-            status: 'error',
+            ok: false,
             message: 'User not found!',
             data: null,
           });
@@ -136,7 +136,7 @@ module.exports = {
       } else {
         console.log('userInfo (not found):', userInfo);
         res.status(404).json({
-          status: 'error',
+          ok: false,
           message: 'User not found!',
           data: null,
         });
@@ -151,7 +151,7 @@ module.exports = {
     }
 
     res.status(400).json({
-      status: 'error',
+      ok: false,
       message: 'This feature is not enabled yet',
       data: null,
     });
