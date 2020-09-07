@@ -19,7 +19,7 @@ RUN npm install
 COPY src /api/src
 COPY swagger.json /api/swagger.json
 
-RUN npm build
+RUN npm run build
 
 EXPOSE 8080
 
