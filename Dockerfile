@@ -5,19 +5,21 @@ FROM node:14.5.0-buster-slim
 # Connection to Database
 ENV PORT=8080
 ENV API_SECRET="nodeRestApi"
+ENV NODE_ENV="production"
+ENV DB_PRODUCTION="placeholder"
 
 # Copy and Install Dependencies
+RUN sudo apt-get install python3
 RUN mkdir /api
 WORKDIR /api
 COPY package.json /api/package.json
 RUN npm install
 
 # Copy API
-COPY server.js /api/server.js
-COPY app /api/app
-COPY constants /api/constants
+COPY server /api/server
+COPY public /api/public
+COPY bin /api/bin
 COPY routes /api/routes
-COPY database.js /api/database.js
 
 EXPOSE 8080
 
