@@ -19,6 +19,8 @@ WORKDIR /api
 COPY package.json /api/package.json
 COPY yarn.lock /api/yarn.lock
 RUN npm install -g yarn
+RUN npm install -g babel
+RUN npm install -g babel-cli
 RUN yarn install
 
 # Copy API
