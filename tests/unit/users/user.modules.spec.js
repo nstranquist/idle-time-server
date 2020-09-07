@@ -1,9 +1,9 @@
 // test all modules
-import { expect } from 'chai';
-import sinon from 'sinon';
-import UserService from '../../../src/services/UserService';
-import * as userController from '../../../src/controllers/user.controller';
-import UserModel from '../../../src/models/user.model';
+const { expect } = require('chai');
+const sinon = require('sinon');
+const UserService = require('../../../src/services/UserService');
+const userController = require('../../../src/controllers/user.controller');
+const UserModel = require('../../../src/models/user.model');
 
 let modelMock;
 let serviceMock;

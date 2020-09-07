@@ -1,9 +1,9 @@
-import http from 'http';
-// import https from 'https'
-// import fs from 'fs'
-import initConfig from '../config';
-import startApp from '../app';
-import db from '../lib/db';
+const http = require('http');
+// const https = require('https)
+// const fs = require('fs)
+const initConfig = require('../config');
+const startApp = require('../app');
+const db = require('../lib/db');
 
 const config = initConfig();
 

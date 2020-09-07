@@ -1,5 +1,5 @@
-import Joi from 'joi';
-import { password } from './custom.validator';
+const Joi = require('joi');
+const { password } = require('./custom.validator');
 
 const createUser = Joi.object().keys({
   name: Joi.string().required(),
@@ -16,7 +16,7 @@ const resetPassword = Joi.object().keys({
   email: Joi.string().required().email()
 });
 
-export {
+module.exports = {
   createUser,
   authenticateUser,
   resetPassword

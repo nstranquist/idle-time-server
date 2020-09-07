@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import bcrypt from 'bcrypt';
+const bcrypt = require('bcrypt');
 
 class UserService {
   constructor(userModel) {
@@ -79,4 +79,4 @@ class UserService {
   }
 }
 
-export default UserService;
+module.exports = UserService;

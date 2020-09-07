@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import jwt from 'jsonwebtoken';
-import UserService from '../services/UserService';
-import UserModel from '../models/user.model';
+const jwt = require('jsonwebtoken');
+const UserService = require('../services/UserService');
+const UserModel = require('../models/user.model');
 
 const tokenExpirationTime = '4h';
 
@@ -60,7 +60,7 @@ const getUserData = async (req, res, next) => {
   return res.status(400).json({ status: 'error', message: 'Feature not implemented yet' });
 };
 
-export {
+module.exports = {
   create,
   authenticate,
   resetPassword,

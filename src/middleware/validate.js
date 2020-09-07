@@ -12,6 +12,6 @@ const validateBody = (schema) => async (req, res, next) => {
   }
 };
 
-export {
+module.exports = {
   validateBody
 };

@@ -16,7 +16,7 @@ const objectId = (value, helpers) => {
   return value;
 };
 
-export {
+module.exports = {
   password,
   objectId
 };

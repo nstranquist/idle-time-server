@@ -1,8 +1,7 @@
-import * as validator from '../validators/user.validator';
-import { validateBody } from '../middleware/validate';
-import * as userController from '../controllers/user.controller';
-
 const express = require('express');
+const validator = require('../validators/user.validator');
+const { validateBody } = require('../middleware/validate');
+const userController = require('../controllers/user.controller');
 
 const router = express.Router();
 
