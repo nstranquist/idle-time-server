@@ -3,7 +3,7 @@ const bunyan = require('bunyan');
 const path = require('path');
 
 module.exports = () => {
-  const nodeEnv = process.env.NODE_ENV || 'development';
+  const nodeEnv = process.env.NODE_ENV;
 
   let environmentOptions = {};
 
@@ -44,6 +44,6 @@ module.exports = () => {
       presets: path.join(__dirname, './data/presets.json'), // in development
     },
     jwtSecret: process.env.API_SECRET,
-    sessionSecret: process.env.SESSION_SECRET || 'another secret',
+    sessionSecret: process.env.SESSION_SECRET,
   };
 };

@@ -8,6 +8,7 @@ const cors = require('cors');
 const mongoose = require('mongoose'); // database configuration
 const MongoStore = require('connect-mongo')(session);
 const swaggerUi = require('swagger-ui-express');
+const MongoService = require('./lib/db');
 const auth = require('./lib/passport-auth');
 const indexRouter = require('./routes/index');
 const swaggerDoc = require('../swagger.json');
@@ -15,6 +16,11 @@ require('dotenv').config();
 
 module.exports = (config) => {
   const { log } = config;
+
+  log.info('connection:', config.db.connection);
+  MongoService.connect(config.db.connection)
+    .then(() => log.info('connected to mongodb successfully'))
+    .catch(err => log.fatal('mongodb connection failed with error:', err));
 
   const app = express();
 
@@ -31,7 +37,7 @@ module.exports = (config) => {
   // app.use('/', express.static(path.join(__dirname, '../public')));
   app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 
-  app.set('secretKey', config.jwtSecret); // jwt secret token// connection to mongodb
+  app.set('secretKey', config.jwtSecret); // jwt secret token // connection to mongodb
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,15 +55,25 @@ module.exports = (config) => {
         resave: true, // session will stay active if it wasn't changed
         saveUninitialized: false, // to prevent getting empty objects in database
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
+        secure: true
       })
     );
-  } else if (app.get('env') === 'development' || app.get('env') === 'test') {
+  } else if (app.get('env') === 'development') {
     app.use(
       session({
         secret: config.sessionSecret,
         resave: true, // session will stay active if it wasn't changed
         saveUninitialized: false, // to prevent getting empty objects in database
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
+      })
+    );
+  } else if (app.get('env') === 'test' || app.get('env') === 'testing') {
+    log.info('testing db');
+    app.use(
+      session({
+        secret: config.sessionSecret,
+        saveUninitialized: false,
+        resave: false
       })
     );
   } else {

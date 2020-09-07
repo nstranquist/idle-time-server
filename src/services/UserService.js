@@ -2,14 +2,14 @@
 const bcrypt = require('bcrypt');
 
 class UserService {
-  constructor(userModel) {
-    this.userModel = userModel;
+  constructor(UserModel) {
+    this.UserModel = UserModel;
   }
 
   // returns true if found, false if not
   async ensureUniqueEmail(email) {
     try {
-      const foundUser = await this.userModel.findOne({ email }).exec();
+      const foundUser = await this.UserModel.findOne({ email }).exec();
       if (foundUser) return true;
       return false;
     } catch (error) {
@@ -21,11 +21,8 @@ class UserService {
   // returns userData if found, error if not
   async findUserByEmail(email) {
     try {
-      const userInfo = await this.userModel.findOne({ email }).exec();
-      if (userInfo) {
-        console.log('userinfo:', userInfo);
-        return userInfo;
-      }
+      const userInfo = await this.UserModel.findOne({ email }).exec();
+      if (userInfo) return userInfo;
       return {
         error: true,
         statusCode: 400,
@@ -42,7 +39,7 @@ class UserService {
 
   async compareUserPassword(candidatePassword, password) {
     if (bcrypt.compareSync(candidatePassword, password)) {
-      return { error: false, json: { status: 'success', message: 'Found user' } };
+      return { error: false, json: { status: 'success', message: 'User logged in successfully' } };
     }
     return {
       error: true,
@@ -54,7 +51,7 @@ class UserService {
   // returns user if found, error if not
   async findUserById(id) {
     try {
-      const user = await this.userModel.findById(id);
+      const user = await this.UserModel.findById(id);
       return user;
     } catch (error) {
       return {
@@ -67,7 +64,7 @@ class UserService {
   // user should contain name, email, password
   async createUser(user) {
     try {
-      const userRecord = await this.userModel.create(user);
+      const userRecord = await new this.UserModel(user).save();
       return userRecord;
     } catch (error) {
       return {

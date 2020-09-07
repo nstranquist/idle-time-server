@@ -37,14 +37,15 @@ const port = normalizePort(config.port);
 const server = http.createServer(app);
 // const server = https.createServer(options, app).listen(port);
 
-db.connect(config.db.connection)
-  .then(() => {
-    config.log.info('Connected to MongoDB');
-    server.listen(port);
-  })
-  .catch((err) => {
-    config.log.fatal(`fdjlkdfjslkf   ${err}`);
-  });
+// db.connect(config.db.connection)
+//   .then(() => {
+//     config.log.info('Connected to MongoDB');
+//     server.listen(port);
+//   })
+//   .catch((err) => {
+//     config.log.fatal(`mongo failed to connect: ${err}`);
+//   });
+server.listen(port);
 
 server.on('listening', () => {
   const addr = server.address();

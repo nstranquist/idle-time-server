@@ -18,6 +18,11 @@ describe('User Modules', () => {
     const userService = new UserService(modelMock);
     expect(UserService).to.be.a('function');
     expect(userService).to.be.a('object');
+    expect(userService.compareUserPassword).to.be.a('function');
+    expect(userService.createUser).to.be.a('function');
+    expect(userService.ensureUniqueEmail).to.be.a('function');
+    expect(userService.findUserByEmail).to.be.a('function');
+    expect(userService.findUserById).to.be.a('function');
   });
   it('should load user controller', () => {
     serviceMock = sinon.mock(serviceMock);

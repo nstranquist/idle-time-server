@@ -6,7 +6,8 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text --reporter=lcov mocha --recursive './tests' --require @babel/register",
+    "test": "NODE_ENV=test mocha --recursive './tests'",
+    "es6test": "nyc --reporter=html --reporter=text --reporter=lcov mocha --recursive './tests' --require @babel/register",
     "build": "./node_modules/.bin/babel ./src --out-dir build",
     "start": "node ./src/bin/www | bunyan",
     "dev": "nodemon --exec babel-node ./src/bin/www | bunyan",
@@ -44,6 +45,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/register": "^7.11.5",
     "@babel/runtime": "^7.11.2",
+    "axios": "^0.20.0",
     "bluebird": "^3.7.2",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

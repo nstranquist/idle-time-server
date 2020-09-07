@@ -35,19 +35,22 @@ const authenticate = async (req, res, next) => {
     { expiresIn: tokenExpirationTime } // 4h
   );
 
-  response.data = {
-    userData: {
-      _id: userResponse._id,
-      name: userResponse.name,
-      email: userResponse.email,
-    },
-    userSettings: userResponse.settings ? userResponse.settings : [],
-    userStatus: userResponse.status.is_new ? { is_new: true } : { is_member: userResponse.status.is_member },
-    // userStatus: { is_new: true },
-    token,
+  const validResponse = {
+    ...response.json,
+    data: {
+      userData: {
+        _id: userResponse._id,
+        name: userResponse.name,
+        email: userResponse.email,
+      },
+      userSettings: userResponse.settings ? userResponse.settings : [],
+      userStatus: userResponse.status.is_new ? { is_new: true } : { is_member: userResponse.status.is_member },
+      // userStatus: { is_new: true },
+      token,
+    }
   };
 
-  return res.status(200).json(response);
+  return res.status(200).json(validResponse);
 };
 
 const resetPassword = async (req, res, next) => {
