@@ -6,8 +6,8 @@ require('../../fixtures/sinon-mongoose');
 const MongoService = require('../../../src/lib/db');
 
 const { expect } = chai;
-const UserService = require('../../../src/modules/users/user.service');
-const UserModel = require('../../../src/modules/users/user.model');
+const UserService = require('../../../src/services/UserService');
+const UserModel = require('../../../src/models/user.model');
 
 const { UserFixture, ErrorFixture } = require('../../fixtures');
 

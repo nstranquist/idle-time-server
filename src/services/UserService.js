@@ -1,30 +1,82 @@
 /* eslint-disable class-methods-use-this */
-const UserModel = require('../models/user.model');
+import bcrypt from 'bcrypt';
 
 class UserService {
-  // manual dependency injection
   constructor(userModel) {
     this.userModel = userModel;
   }
 
-  async findUserById(id) {
-    const user = await this.userModel.findById(id);
-    return user;
-  }
-
-  async createUser(user) {
-    if (this.validate(user)) {
-      const userRecord = await UserModel.create(user);
-      return userRecord;
+  // returns true if found, false if not
+  async ensureUniqueEmail(email) {
+    try {
+      const foundUser = await this.userModel.findOne({ email }).exec();
+      if (foundUser) return true;
+      return false;
+    } catch (error) {
+      console.log('error:', error.toString());
+      return false;
     }
-    return { ok: false, message: 'User could not be validated' };
   }
 
-  validate(user) {
-    if (user.name && user.email && user.password) return true;
+  // returns userData if found, error if not
+  async findUserByEmail(email) {
+    try {
+      const userInfo = await this.userModel.findOne({ email }).exec();
+      if (userInfo) {
+        console.log('userinfo:', userInfo);
+        return userInfo;
+      }
+      return {
+        error: true,
+        statusCode: 400,
+        json: { status: 'error', message: 'User not found' }
+      };
+    } catch (error) {
+      return {
+        error: true,
+        statusCode: 400,
+        json: { status: 'error', message: error.toString() }
+      };
+    }
+  }
 
-    return false;
+  async compareUserPassword(candidatePassword, password) {
+    if (bcrypt.compareSync(candidatePassword, password)) {
+      return { error: false, json: { status: 'success', message: 'Found user' } };
+    }
+    return {
+      error: true,
+      statusCode: 404,
+      json: { status: 'error', message: 'Invalid password' }
+    };
+  }
+
+  // returns user if found, error if not
+  async findUserById(id) {
+    try {
+      const user = await this.userModel.findById(id);
+      return user;
+    } catch (error) {
+      return {
+        error: true,
+        message: error.toString() // will need to understand what type of errors can be thrown and translate
+      };
+    }
+  }
+
+  // user should contain name, email, password
+  async createUser(user) {
+    try {
+      const userRecord = await this.userModel.create(user);
+      return userRecord;
+    } catch (error) {
+      return {
+        error: true,
+        statusCode: 400,
+        json: { status: 'error', message: error.toString() }
+      };
+    }
   }
 }
 
-module.exports = UserService;
+export default UserService;
