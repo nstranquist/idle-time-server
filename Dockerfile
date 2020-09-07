@@ -19,13 +19,6 @@ WORKDIR /api
 COPY package.json /api/package.json
 COPY yarn.lock /api/yarn.lock
 RUN npm install -g yarn
-RUN yarn global add @babel/cli
-RUN yarn global add @babel/core
-RUN yarn global add @babel/node
-RUN yarn global add @babel/plugin-transform-runtime
-RUN yarn global add @babel/preset-env
-RUN yarn global add @babel/register
-RUN yarn global add @babel/runtime
 RUN yarn install
 
 # Copy API
