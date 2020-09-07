@@ -19,14 +19,14 @@ WORKDIR /api
 COPY package.json /api/package.json
 COPY yarn.lock /api/yarn.lock
 RUN npm install -g yarn
+COPY .babelrc /api/.babelrc
 RUN yarn install
 
 # Copy API
 COPY src /api/src
 COPY swagger.json /api/swagger.json
-COPY .babelrc /api/.babelrc
 
-RUN yarn dev
+RUN yarn dockerstart
 
 EXPOSE 8080
 

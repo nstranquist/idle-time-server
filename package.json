@@ -7,8 +7,9 @@
   "private": true,
   "scripts": {
     "test": "nyc --reporter=html --reporter=text --reporter=lcov mocha --recursive './tests' --require @babel/register",
-    "build": "/api/node_modules/.bin/babel ./src --out-dir build",
+    "build": "./node_modules/.bin/babel ./src --out-dir build",
     "start": "node ./build/bin/www | bunyan",
+    "dockerstart": "node --exec babel-node ./src/bin/www | bunyan",
     "dev": "nodemon --exec babel-node ./src/bin/www | bunyan",
     "lint": "./node_modules/.bin/eslint ./src",
     "pretty": "prettier --write '**/*.{js,json}' '!node_modules/**'",
