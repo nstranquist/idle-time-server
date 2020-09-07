@@ -26,7 +26,7 @@ COPY src /api/src
 COPY swagger.json /api/swagger.json
 COPY .babelrc /api/.babelrc
 
-RUN npx babel ./src --out-dir /build
+RUN npx babel-cli ./src --out-dir /build
 
 EXPOSE 8080
 
