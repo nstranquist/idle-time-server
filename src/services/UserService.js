@@ -10,8 +10,8 @@ class UserService {
   async ensureUniqueEmail(email) {
     try {
       const foundUser = await this.UserModel.findOne({ email }).exec();
-      if (foundUser) return true;
-      return false;
+      if (foundUser) return false;
+      return true;
     } catch (error) {
       console.log('error:', error.toString());
       return false;
@@ -39,7 +39,7 @@ class UserService {
 
   async compareUserPassword(candidatePassword, password) {
     if (bcrypt.compareSync(candidatePassword, password)) {
-      return { error: false, json: { status: 'success', message: 'User logged in successfully' } };
+      return { json: { status: 'success', message: 'User logged in successfully' } };
     }
     return {
       error: true,
@@ -52,11 +52,14 @@ class UserService {
   async findUserById(id) {
     try {
       const user = await this.UserModel.findById(id);
-      return user;
+      if (user) return user;
+      return { error: true, message: 'Could not find a user with the given id' };
     } catch (error) {
+      let message = error.toString();
+      if (message[0] === 'C' && message[1] === 'a') message = 'Invalid user id';
       return {
         error: true,
-        message: error.toString() // will need to understand what type of errors can be thrown and translate
+        message // will need to understand what type of errors can be thrown and translate
       };
     }
   }

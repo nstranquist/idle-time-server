@@ -6,7 +6,7 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "test": "NODE_ENV=test mocha --recursive './tests'",
+    "test": "NODE_ENV=test mocha --recursive './tests' --timeout 5000",
     "es6test": "nyc --reporter=html --reporter=text --reporter=lcov mocha --recursive './tests' --require @babel/register",
     "build": "./node_modules/.bin/babel ./src --out-dir build",
     "start": "node ./src/bin/www | bunyan",

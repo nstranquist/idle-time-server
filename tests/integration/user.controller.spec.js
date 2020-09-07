@@ -16,6 +16,7 @@ describe('User Controller', () => {
     MongoService.resetMongoose();
     return MongoService.close();
   });
+
   describe('POST /auth/signup', () => {
     let newUserData;
     const name = 'nico';

@@ -10,9 +10,9 @@ const create = async (req, res, next) => {
   const { email } = req.body;
 
   // the 'try/catch' error boundary is done inside of the UserService
-  const emailExists = await userService.ensureUniqueEmail(email);
+  const isUniqueEmail = await userService.ensureUniqueEmail(email);
 
-  if (emailExists) return res.status(400).json({ status: 'error', message: 'User already exists' });
+  if (!isUniqueEmail) return res.status(400).json({ status: 'error', message: 'User already exists' });
 
   const response = await userService.createUser(req.body);
   if (response.error) return res.status(response.statusCode).json(response.json);

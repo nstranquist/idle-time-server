@@ -17,7 +17,6 @@ require('dotenv').config();
 module.exports = (config) => {
   const { log } = config;
 
-  log.info('connection:', config.db.connection);
   MongoService.connect(config.db.connection)
     .then(() => log.info('connected to mongodb successfully'))
     .catch(err => log.fatal('mongodb connection failed with error:', err));
