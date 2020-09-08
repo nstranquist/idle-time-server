@@ -25,7 +25,10 @@ class ProjectService {
       if (userData.error) return userData;
       // TODO: create this project INSIDE of the user model
       userData.projects.push(project);
-      const newProject = userData.projects.create(project);
+      const newLength = await userData.projects.push(project);
+      if (newLength < 1) throw new Error('Project not added');
+      const newProject = userData.projects[newLength - 1];
+      await userData.save();
       return { ok: true, message: 'Project created successfully', project: newProject };
     } catch (error) {
       console.log('error:', error);
@@ -40,7 +43,6 @@ class ProjectService {
       if (userData.error) return userData;
       // get the projects from this user
       const { projects } = userData;
-      // console.log('projects:', projects);
       return { ok: true, message: 'Found user projects', projects };
     } catch (error) {
       console.log('error:', error);
@@ -53,8 +55,7 @@ class ProjectService {
       const userData = await this.findUserById(userId);
       if (userData.error) return userData;
       // get the project from this user
-      const foundProject = await userData.projects.find(project => project._id === projectId);
-      console.log('foundProject:', foundProject);
+      const foundProject = await userData.projects.find(project => project._id.toString() === projectId);
       if (foundProject) return { ok: true, message: 'Found user project', project: foundProject };
       return { error: true, json: { ok: false, message: 'Could not find user project' } };
     } catch (error) {
@@ -67,7 +68,6 @@ class ProjectService {
   async findUserById(id) {
     try {
       const userData = await this.UserModel.findById(id);
-      // console.log(userData);
       if (userData) return userData;
       return { error: true, json: { ok: false, message: 'Could not find user by the given id' } };
     } catch (error) {

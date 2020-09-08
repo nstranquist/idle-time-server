@@ -55,6 +55,7 @@ describe('ProjectService', () => {
         expect(projectResult).to.be.a('object');
         expect(projectResult.message).to.be.equal('Project created successfully');
         expect(projectResult.project).to.deep.include(mockCreatedProject);
+        // test if the model had created a project
       } catch (error) {
         expect.fail(error);
       }

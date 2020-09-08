@@ -7,8 +7,7 @@ const getProjectSummaries = async (req, res, next) => {
   const { userId } = req.body;
   const projectService = new ProjectService(UserModel, ProjectModel);
   const response = await projectService.getSummaries(userId);
-  console.log('response:', response);
-  if (response.error) return res.status(response.statusCode || 400).json(response.json);
+  if (response.error) return res.status(400).json(response.json);
   return res.status(200).json(response);
 };
 
@@ -17,8 +16,7 @@ const getProject = async (req, res, next) => {
   const { id } = req.params;
   const projectService = new ProjectService(UserModel, ProjectModel);
   const response = await projectService.getProject(userId, id);
-  console.log('response:', response);
-  if (response.error) return res.status(response.statusCode || 400).json(response.json);
+  if (response.error) return res.status(400).json(response.json);
   return res.status(200).json(response);
 };
 
