@@ -9,7 +9,8 @@ const router = express.Router();
 const usersRouter = require('./user.routes');
 const tasksRouter = require('./tasks');
 const presetsRouter = require('./presets');
-const projectsRouter = require('./projects');
+const projectsRouter = require('./project.routes');
+// const projectsRouter = require('./projects');
 const settingsRouter = require('./settings');
 const timetrackingRouter = require('./timetracking');
 
