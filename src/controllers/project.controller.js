@@ -23,9 +23,10 @@ const getProject = async (req, res, next) => {
 };
 
 const createProject = async (req, res, next) => {
-  const { userId, project } = req.body;
+  const { userId } = req.body;
+  delete req.body.userId;
   const projectService = new ProjectService(UserModel, ProjectModel);
-  const response = await projectService.createProject(userId, project);
+  const response = await projectService.createProject(userId, req.body);
   if (response.error) return res.status(400).json(response.json);
   return res.status(201).json(response);
 };

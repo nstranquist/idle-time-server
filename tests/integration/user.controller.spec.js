@@ -100,6 +100,7 @@ describe('User Controller', () => {
           if (err) return done(err);
           expect(res.statusCode).to.equal(200);
           expect(res.body.message).to.equal('User logged in successfully');
+          expect(res.body.data.token).to.be.a('string');
           return done();
         });
     });

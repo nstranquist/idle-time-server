@@ -23,9 +23,10 @@ class ProjectService {
     try {
       const userData = await this.findUserById(userId);
       if (userData.error) return userData;
-      const projectRecord = await new this.ProjectModel(project).save();
-      // console.log('projectRecord:', projectRecord);
-      return { ok: true, message: 'Project created successfully', project: projectRecord };
+      // TODO: create this project INSIDE of the user model
+      userData.projects.push(project);
+      const newProject = userData.projects.create(project);
+      return { ok: true, message: 'Project created successfully', project: newProject };
     } catch (error) {
       console.log('error:', error);
       return { error: true, json: { ok: false, message: error.toString() } };
