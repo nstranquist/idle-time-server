@@ -1,7 +1,10 @@
 const Joi = require('joi');
 
 const createProject = Joi.object().keys({
-  name: Joi.string().required()
+  userId: Joi.string(),
+  title: Joi.string().required(),
+  desc: Joi.string(),
+  // add other options here
 });
 
 module.exports = {

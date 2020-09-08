@@ -19,8 +19,17 @@ class ProjectService {
     this.ProjectModel = ProjectModel;
   }
 
-  async createProject(uid, project) {
-    return project;
+  async createProject(userId, project) {
+    try {
+      const userData = await this.findUserById(userId);
+      if (userData.error) return userData;
+      const projectRecord = await new this.ProjectModel(project).save();
+      // console.log('projectRecord:', projectRecord);
+      return { ok: true, message: 'Project created successfully', project: projectRecord };
+    } catch (error) {
+      console.log('error:', error);
+      return { error: true, json: { ok: false, message: error.toString() } };
+    }
   }
 
   // gets all projects[] inside of UserModel.projects
@@ -30,7 +39,7 @@ class ProjectService {
       if (userData.error) return userData;
       // get the projects from this user
       const { projects } = userData;
-      console.log('projects:', projects);
+      // console.log('projects:', projects);
       return { ok: true, message: 'Found user projects', projects };
     } catch (error) {
       console.log('error:', error);
@@ -57,12 +66,12 @@ class ProjectService {
   async findUserById(id) {
     try {
       const userData = await this.UserModel.findById(id);
-      console.log(userData);
+      // console.log(userData);
       if (userData) return userData;
-      return { error: true, message: 'Could not find user by the given id' };
+      return { error: true, json: { ok: false, message: 'Could not find user by the given id' } };
     } catch (error) {
       console.log('error:', error);
-      return { error: true, message: error };
+      return { error: true, json: { ok: false, message: error } };
     }
   }
 }

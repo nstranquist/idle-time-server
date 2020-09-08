@@ -1,0 +1,13 @@
+{
+  "_id": "5a5ea8fde43c771e4aa5ea06",
+  "firstName": "Nico",
+  "lastName": "Stranquist",
+  "email": "nicostran@gmail.com",
+  "phoneNumber": "3146161916",
+  "address": "6300 Clayton Ave",
+  "city": "Saint Louis",
+  "state": "MO",
+  "zipCode": "63139",
+  "country": "USA",
+  "__v": 0
+}

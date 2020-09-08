@@ -22,3 +22,10 @@ module.exports.dropTestDb = (collectionName) => {
     });
   }
 };
+
+module.exports.isConnected = () => {
+  const { readyState } = mongoose.connection;
+  // console.log('ready state:', readyState);
+  if (readyState > 0) return true;
+  return false;
+};

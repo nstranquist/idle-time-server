@@ -23,10 +23,16 @@ const getProject = async (req, res, next) => {
 };
 
 const createProject = async (req, res, next) => {
-  next();
+  const { userId, project } = req.body;
+  const projectService = new ProjectService(UserModel, ProjectModel);
+  const response = await projectService.createProject(userId, project);
+  if (response.error) return res.status(400).json(response.json);
+  return res.status(201).json(response);
 };
 
 const deleteProject = async (req, res, next) => {
+  const isArchive = req.query.archive;
+  console.log('value of isArchive:', isArchive);
   next();
 };
 
