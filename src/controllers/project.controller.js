@@ -30,9 +30,15 @@ const createProject = async (req, res, next) => {
 };
 
 const deleteProject = async (req, res, next) => {
+  const { userId } = req.body;
+  const { id } = req.params;
   const isArchive = req.query.archive;
-  console.log('value of isArchive:', isArchive);
-  next();
+
+  const projectService = new ProjectService(UserModel, ProjectModel);
+  const response = await projectService.removeProject(userId, id, isArchive);
+  console.log('delete response:', response);
+  if (response.error) return res.status(400).json(response.json);
+  return res.status(204).json(response);
 };
 
 const updateProjectDetails = async (req, res, next) => {

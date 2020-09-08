@@ -137,18 +137,20 @@ describe('ProjectController', () => {
     });
   });
 
-  // describe('DELETE /projects/:id', () => {
-  //   it('should delete a project', done => {
-  //     agent
-  //       .delete(`/v1/projects/${projectData._id}`)
-  //       .set({ 'x-access-token': userToken })
-  //       .send()
-  //       .end((err, res) => {
-  //         if(err) done(err)
-  //         console.log(res.body)
-  //         expect(res.statusCode).to.equal(204)
-  //         expect(res.body.message).to.equal('Project removed successfully')
-  //       })
-  //   }
-  // })
+  describe('DELETE /projects/:id', () => {
+    it('should delete a project', done => {
+      agent
+        .delete(`/v1/projects/${projectData._id}`)
+        .set({ 'x-access-token': userToken })
+        .send()
+        .end((err, res) => {
+          if (err) done(err);
+          console.log('res body:', res.body);
+          console.log('res:', res);
+          expect(res.statusCode).to.equal(204);
+          expect(res.body.ok).to.equal(true);
+          expect(res.body.message).to.equal('Project removed successfully');
+        });
+    });
+  });
 });
