@@ -45,7 +45,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/register": "^7.11.5",
     "@babel/runtime": "^7.11.2",
-    "axios": "^0.20.0",
+    "axios": "^0.21.2",
     "bluebird": "^3.7.2",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
