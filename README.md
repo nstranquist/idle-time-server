@@ -1,6 +1,12 @@
 # IdleTime Server
 This is the server for the IdleTime app
 
+## Getting Started:
+
+1. `
+
+## Notes
+
 ### Architecture Overview
 
 This project is using Node / Express for the api, Mongoose / MongoDb for the database layer.
